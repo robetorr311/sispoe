@@ -1,0 +1,1 @@
+<input type="hidden" name="cuantos" id="cuantos" value="0" />                                  

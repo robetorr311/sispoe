@@ -1,0 +1,1 @@
+<input type="hidden" name="tipocancer" id="tipocancer" value="NINGUNO" />

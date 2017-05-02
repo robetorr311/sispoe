@@ -1,0 +1,1 @@
+<textarea class="form-control" <?php if(!empty($disabled)){ echo $disabled; } ?> name="tipocancer" id="tipocancer" placeholder="TIPO DE CANCER"></textarea> 

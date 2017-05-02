@@ -1,0 +1,2 @@
+                                  2.6 Si padece una o más enfermedades crónicas, señale: <br>
+                                  <textarea class="form-control"  name="cronicas" id="cronicas" placeholder="ENFERMEDADES CRONICAS"></textarea>

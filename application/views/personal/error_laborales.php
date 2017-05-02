@@ -1,0 +1,2 @@
+                                  2.5.- Antecedentes laborales con exposición a Radiaciones Ionizantes.- Indique brevemente tiempo que  tiene laborando con radiaciones ionizantes, tipos de servicio y equipos, diga fechas al menos aproximadas <br>
+                                  <textarea class="form-control" disabled name="laborales" id="laborales" placeholder="ANTECEDENTES LABORALES"></textarea> 

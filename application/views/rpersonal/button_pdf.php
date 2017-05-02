@@ -1,0 +1,1 @@
+<a type="button" href="<?php echo $ruta.'&idreporte='.$idreporte; ?>" target="blank" class="btn <?php echo $color; ?>">Ver PDF</a><a type="button" href="<?php echo base_url(); ?>index.php/Rpersonal/index" class="btn <?php echo $color; ?>">Finalizar</a>
