@@ -45,7 +45,6 @@
           <div class="row">
             <div class="col-xs-12">          
                   <a type="button" href="<?php echo base_url(); ?>index.php/Generar/index" class="btn <?php echo $color; ?>">Finalizar</a>
-                  
             </div>
           </div>             
 <script type="text/javascript">  

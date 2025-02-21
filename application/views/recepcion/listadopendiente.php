@@ -38,7 +38,16 @@
                         <td><?php echo $row->establecimiento; ?></td>
                         <td><?php echo $row->servicio; ?></td>          
                 <td>
+                <?php
+                if ($row->recibir>0){ ?>
                 <a type="button" class="btn btn-block btn-warning btn-xs" onclick="dosimetro('<?php echo $row->id; ?>')">Recibir</a>
+                <?php }
+                else {
+                  ?>
+                <button disabled class="btn btn-block btn-warning btn-xs" onclick="dosimetro('<?php echo $row->id; ?>')">Recibir</button>                  
+                  <?php
+                }
+                ?>
                 </td>
             </tr>
           <?php endforeach; ?>

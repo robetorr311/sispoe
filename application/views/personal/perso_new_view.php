@@ -15,7 +15,11 @@
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
                                   <input type="text" name="codigo" id="codigo" disabled class="form-control" value="<?php echo $codigo; ?>" placeholder="CODIGO">
+                                  <span class="input-group-btn">
+      <button class="btn btn-info btn-flat <?php echo $color; ?>" type="button" onclick="cambiar();"><i class="fa fa-pencil"></i></button>
+                                  </span>                                  
                                 </div>
+
                               </div>
                             </div><!-- /.col -->
                           </div><!-- /.row -->
@@ -59,12 +63,12 @@
                           <div class="row">
                           <div class="col-md-6">
                             <div id="cont_cedula">
-                              <div class="input-group">
+                              <div id="imp_cedula" class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
-                                <input type="text" name="cedula" id="cedula" class="form-control"  placeholder="CEDULA">
+                                <input type="text" name="cedula" id="cedula" class="form-control"  placeholder="CEDULA" onchange="validacedula();"><div id="error-msg>"></div>
                               </div>
                             </div>  
-                            </div><!-- /.col --> 
+                          </div><!-- /.col --> 
                           <div class="col-md-6">
                             <div id="cont_sexo">
                               <div class="input-group">
@@ -99,7 +103,7 @@
                               <div id="cont_correo">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                  <input type="text" name="correo" id="correo" class="form-control"  placeholder="CORREO">
+                                  <input type="text" name="correo" id="correo" class="form-control"  placeholder="CORREO" value="SIN INFORMACION">
                                 </div>                             
                               </div>  
                             </div><!-- /.col -->
@@ -109,14 +113,22 @@
                               <div id="cont_telefono">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
-                                  <input type="text" name="telefono" id="telefono" class="form-control"  placeholder="TELEFONO">
-                                <script type="text/javascript">
-                                  $("#telefono").inputmask({"mask": "(999) 999-9999"});
-                                </script>                                      
+                                  <input type="text" name="telefono" id="telefono" class="form-control"  placeholder="TELEFONO" value="SIN INFORMACION">
                                 </div>
                               </div>  
                             </div><!-- /.col -->
-                          </div><!-- /.row -->                          
+                          </div><!-- /.row -->  
+                          <div class="row">
+                            <div class="col-xs-12">
+                              <div id="cont_activo">
+                                <div class="input-group">
+                                  <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                  <input type="radio" name="activo" id="activo" value="20"  checked> Activo
+                                  <input type="radio" name="activo" id="inactivo" value="21" > No Activo
+                                </div>
+                              </div>  
+                            </div><!-- /.col -->
+                          </div><!-- /.row -->                                                   
                         </div><!-- /.box body datos personales -->
                       </div><!-- /.box datos personales -->
                     </div><!-- col-md-6 lado izquierdo-->
@@ -133,11 +145,7 @@
                               <div id="cont_nacionalidad">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                  <select name="nacionalidad" id="nacionalidad" class="form-control" >
-                                  <option selected value="0">NACIONALIDAD</option>
-                                  <option selected value="V">VENEZOLANO</option>
-                                  <option selected value="E">EXTRANJERO</option>
-                                  </select>
+                                  <input type="text" name="nacionalidad" id="nacionalidad" class="form-control" value="VENEZOLANO(A)">
                                 </div>
                               </div>  
                             </div><!-- /.col -->
@@ -147,10 +155,7 @@
                               <div id="cont_pais">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                  <select name="pais" id="pais" class="form-control"  >
-                                  <option selected value="0">PAIS DE NACIMIENTO</option>
-                                  <?php echo $paises; ?>
-                                  </select>
+                                  <input type="text" name="pais" id="pais" class="form-control" value="VENEZUELA" >
                                 </div>
                               </div>  
                             </div><!-- /.col -->
@@ -160,7 +165,7 @@
                               <div id="cont_lugar">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                  <input type="text" name="lugar" id="lugar" class="form-control"  placeholder="LUGAR DE NACIMIENTO">
+                                  <input type="text" name="lugar" id="lugar" class="form-control" value="SIN INFORMACION" placeholder="LUGAR DE NACIMIENTO">
                                 </div>
                               </div>  
                             </div><!-- /.col -->
@@ -170,7 +175,7 @@
                               <div id="cont_profesion">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                                  <input type="text" name="profesion" id="profesion" class="form-control" placeholder="PROFESION" >
+                                  <input type="text" name="profesion" id="profesion" class="form-control" value="SIN INFORMACION" placeholder="PROFESION" >
                                 </div>
                               </div>  
                             </div><!-- /.col -->
@@ -180,7 +185,7 @@
                               <div id="cont_especialidad">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                                  <input type="text" name="especialidad" id="especialidad" class="form-control" placeholder="ESPECIALIDAD">
+                                  <input type="text" name="especialidad" id="especialidad" class="form-control" value="SIN INFORMACION" placeholder="ESPECIALIDAD">
                                 </div>
                               </div>  
                             </div><!-- /.col -->
@@ -190,7 +195,7 @@
                             <div id="cont_direccion">
                               <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                <textarea class="form-control"  name="direccion" id="direccion" placeholder="DIRECCION"></textarea>
+                                <textarea class="form-control"  name="direccion" id="direccion" value="SIN INFORMACION" placeholder="DIRECCION"></textarea>
                               </div>
                             </div>  
                             </div><!-- /.col -->

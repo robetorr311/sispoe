@@ -118,7 +118,18 @@
                                 </div>
                               </div>  
                             </div><!-- /.col -->
-                          </div><!-- /.row -->                          
+                          </div><!-- /.row --> 
+                          <div class="row">
+                            <div class="col-xs-12">
+                              <div id="cont_activo">
+                                <div class="input-group has-success">
+                                  <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                  <input type="radio" name="activo" id="activo" class="form-control" value="20" disabled checked> Activo
+                                  <input type="radio" name="activo" id="activo" class="form-control" value="21" disabled > No Activo
+                                </div>
+                              </div>  
+                            </div><!-- /.col -->
+                          </div><!-- /.row -->                                                    
                         </div><!-- /.box body datos personales -->
                       </div><!-- /.box datos personales -->
                     </div><!-- col-md-6 lado izquierdo-->

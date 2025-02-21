@@ -36,7 +36,20 @@
                     </div>
                   </div>
                   </div>                                  
-                </div><!-- /.row -->                                 
+                </div><!-- /.row --> 
+                <div class="row">
+                  <div class="col-md-6">
+                  <div id="cont_tipo">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-medkit"></i></span>
+                      <select name="tipo" id="tipo" disabled class="form-control select2">
+                      <option value="0">SELECCIONE TIPO</option>
+                        <?php echo $tipos; ?>
+                      </select>
+                    </div>
+                  </div>
+                  </div>                                  
+                </div><!-- /.row -->                                                 
               </div><!-- /.box-body -->
               <div class="box-footer">
                   <button type="button"  class="btn <?php echo $color; ?>" onclick="nuevo();">Agregar Nuevo</button>

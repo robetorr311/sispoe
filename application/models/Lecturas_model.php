@@ -83,7 +83,7 @@ class Lecturas_model extends CI_Model {
     {
         if (empty($salida)) { $salida=""; } 
          
-        $query = $this->db->query("select * from sys_poe.tarjetas where codigobarra='$tarjeta';");   
+        $query = $this->db->query("select * from sys_poe.tarjetas where sinceros='$tarjeta';");   
         $salida=$query->result();
         foreach ($query->result() as $row)
         {
@@ -102,5 +102,23 @@ class Lecturas_model extends CI_Model {
                 $salida=$row->nextval;
         }        
         return $salida;              
-    }                   
+    }
+    public function get_dosimetro($id)
+    {
+        $query = $this->db->query("SELECT sys_poe.dosimetropersona.id as iddosimetro, sys_poe.dosimetropersona.idpersona as idpersona, sys_poe.dosimetropersona.idtarjeta as idtarjeta, sys_poe.establecimientonombre(sys_poe.dosimetropersona.idestablecimiento) as establecimiento, sys_poe.personalnombre(sys_poe.dosimetropersona.idpersona) as nombrepersona, sys_poe.servicionombre(sys_poe.dosimetropersona.idservicio) as servicio, sys_poe.tipodosimetronombre(sys_poe.dosimetropersona.idtipodosimetro) as tipo, sys_poe.codigotatjera(sys_poe.dosimetropersona.idtarjeta) as tarjeta FROM  sys_poe.dosimetropersona WHERE sys_poe.dosimetropersona.id=$id ORDER BY sys_poe.dosimetropersona.id;");   
+        return $query->result();              
+    }
+    public function get_lectura($id)
+    {
+        $query = $this->db->query("SELECT sys_poe.dosimetropersona.id as iddosimetro, sys_poe.lecturas.dosis as dosis FROM  sys_poe.dosimetropersona, sys_poe.lecturas WHERE sys_poe.dosimetropersona.id = sys_poe.lecturas.iddosimetro AND sys_poe.dosimetropersona.id=$id ORDER BY sys_poe.dosimetropersona.id;");   
+        return $query->result();              
+    }
+    public function ilecturas_new($dosimetro,$idtarjeta,$idpersonal,$dosis){ 
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select * from sys_poe.ilecturas_new($dosimetro , $idtarjeta , $idpersonal , $dosis );");
+        $salida=$query->result();
+        return "select * from sys_poe.ilecturas_new($dosimetro , $idtarjeta , $idpersonal , $dosis );";          
+    }
+ 
 }

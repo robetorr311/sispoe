@@ -1,8 +1,5 @@
-    <!-- DataTables -->
-
-  
+   <!-- DataTables -->
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/dataTables.bootstrap.min.css">
-
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/select2.min.css"> 
     <script src="<?php echo base_url(); ?>assets/js/select2.full.min.js"></script>
     <!-- InputMask -->
@@ -153,13 +150,20 @@ $.datepicker.regional['es'] = {
                                   <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
                                   <input type="text" name="telefono" id="telefono" class="form-control" disabled placeholder="TELEFONO">
                                 </div>
-                                <script type="text/javascript">
-                                  $("#telefono").inputmask({"mask": "(999) 999-9999"});
-                                </script>                                 
-                                
                               </div>  
                             </div><!-- /.col -->
-                          </div><!-- /.row -->                          
+                          </div><!-- /.row --> 
+                          <div class="row">
+                            <div class="col-xs-12">
+                              <div id="cont_activo">
+                                <div class="input-group">
+                                  <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                  <input type="radio" name="activo" id="activo" value="20" disabled checked> Activo
+                                  <input type="radio" name="activo" id="inactivo" value="21" disabled > No Activo
+                                </div>
+                              </div>  
+                            </div><!-- /.col -->
+                          </div><!-- /.row -->                                                    
                         </div><!-- /.box body datos personales -->
                       </div><!-- /.box datos personales -->
                     </div><!-- col-md-6 lado izquierdo-->
@@ -176,9 +180,7 @@ $.datepicker.regional['es'] = {
                               <div id="cont_nacionalidad">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                  <select name="nacionalidad" id="nacionalidad" class="form-control" disabled>
-                                  <option selected value="0">NACIONALIDAD</option>
-                                  </select>
+                                  <input type="text" name="nacionalidad" id="nacionalidad" class="form-control" disabled placeholder="NACIONALIDAD">
                                 </div>
                               </div>  
                             </div><!-- /.col -->
@@ -188,9 +190,7 @@ $.datepicker.regional['es'] = {
                               <div id="cont_pais">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                  <select name="pais" id="pais" class="form-control" disabled >
-                                  <option selected value="0">PAIS DE NACIMIENTO</option>
-                                  </select>
+                                  <input type="text" name="pais" id="pais" class="form-control" disabled placeholder="PAIS DE NACIMIENTO">
                                 </div>
                               </div>  
                             </div><!-- /.col -->

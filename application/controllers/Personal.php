@@ -12,14 +12,14 @@ class Personal extends MY_Controller {
 		$this->load->model('Menu_model');
 		$this->load->model('Controladores_model');
 		$this->load->model('Sesion_model');
+		$login= $this->session->userdata('username');
+		$idsesion= $this->session->userdata('idsesion');		
 		if(empty($idsesion)){
 			redirect('/Inicio/index/');
 		}
 		else {
 			$this->load->model('Usuario_model');
 			$this->load->library('session');
-			$login= $this->session->userdata('username');
-			$idsesion= $this->session->userdata('idsesion');
 			$idusuario=$this->Usuario_model->idusuario_login($login);
 			$idcontrolador=$this->Controladores_model->get_id('Personal');
 			$this->Sesion_model->actividad($idcontrolador,$idusuario , 1 , 5,$idsesion);		
@@ -434,6 +434,7 @@ class Personal extends MY_Controller {
 				$organo=$row->organo; 
 				$laboratorio=$row->laboratorio;
 				$laborales=$row->otros_antecedentes;
+				$estatus = $row->estatus;
 			}
 				$fec=explode('-',$fecha);
 				if(strlen($fec[0])==4){
@@ -491,6 +492,7 @@ class Personal extends MY_Controller {
 			$data['laborales']=$laborales;    		
 			$data['organo']=$organo; 
 			$data['laboratorio']=$laboratorio; 
+			$data['estatus']=$estatus;
 		$this->load->model('Menu_model');
 		$data['color']=$this->Menu_model->get_color('Personal');
 		$this->load->view('personal/perso_reg_view',$data);				
@@ -543,7 +545,8 @@ class Personal extends MY_Controller {
 				$tipocancer=$row->tipocancer; 
 				$cronicas=$row->cronicas; 
 				$laborales=$row->otros_antecedentes;
-				$laboratorio=$row->laboratorio;				
+				$laboratorio=$row->laboratorio;
+				$estatus=$row->estatus;				
 			}
 				$fec=explode('-',$fecha);
 				if(strlen($fec[0])==4){
@@ -619,7 +622,8 @@ class Personal extends MY_Controller {
 			$data['tipocancer']=$tipocancer; 
 			$data['cronicas']=$cronicas; 
 			$data['laborales']=$laborales;
-			$data['laboratorio']=$laboratorio; 					
+			$data['laboratorio']=$laboratorio; 
+			$data['estatus']=$estatus;					
 		$this->load->model('Menu_model');
 		$data['color']=$this->Menu_model->get_color('Personal');
 		$this->load->view('personal/perso_edit_view',$data);							
@@ -651,8 +655,9 @@ class Personal extends MY_Controller {
 		$profesion=$this->input->post('profesion');
 		$especialidad=$this->input->post('especialidad');
 		$nacionalidad=$this->input->post('nacionalidad');
-		$lugar=$this->input->post('lugar'); 
-		$this->Personal_model->ipersonal($codigo , $pnombre , $papellido , $sapellido , $cedula , $telefono , $fecha , $sexo , $snombre , $pais , $direccion , $correo , $profesion , $especialidad , $nacionalidad , $lugar );
+		$lugar=$this->input->post('lugar');
+		$activo=$this->input->post('activo'); 
+		$this->Personal_model->ipersonal($codigo , $pnombre , $papellido , $sapellido , $cedula , $telefono , $fecha , $sexo , $snombre , $pais , $direccion , $correo , $profesion , $especialidad , $nacionalidad , $lugar, $activo );
 			$data['codigo']=$codigo;
 			$data['pnombre']=$pnombre;
 			$data['papellido']=$papellido;
@@ -669,6 +674,7 @@ class Personal extends MY_Controller {
 			$data['especialidad']=$especialidad;
 			$data['nacionalidad']=$nacionalidad;
 			$data['lugar']=$lugar;
+			$data['activo']=$activo;
 		$this->load->model('Menu_model');
 		$data['color']=$this->Menu_model->get_color('Personal');
 			$this->load->view('personal/perso_guardado_view',$data);
@@ -699,6 +705,19 @@ class Personal extends MY_Controller {
 			}
 		}
 	}
+	public function buscarcedula()
+	{
+		$this->load->model('Personal_model');		
+		$cedula=$this->input->post('cedula');
+		$reg=$this->Personal_model->buscacedula($cedula);
+		if($reg==0){
+			$data['reg']=0;
+		}			
+		else {
+			$data['reg']=1;
+		}
+		$this->load->view('personal/buscacedula',$data);
+	}	
 	public function tablatemporal(){
 		$codigo=$this->input->post('id');
 		$this->load->model('Personal_model');
@@ -725,7 +744,26 @@ class Personal extends MY_Controller {
 			$data['tablaservicios']=$this->Establecimientos_model->tablaservicios($id);
 			$this->load->view('personal/error_servicios',$data);
 		}    
-	}     
+	}
+	public function cambiar(){ 
+	 	$codigo=$this->input->post('codigo');
+		$data['codigo']=$codigo;
+		$this->load->view('personal/cambiocodigo',$data);   
+	}
+	public function codigocambiado(){ 
+	 	$codigo=$this->input->post('codigo');
+		$data['codigo']=$codigo;
+		$this->load->view('personal/codigook',$data);   
+	}
+	public function controlcodigo(){
+		$codigo=$this->input->post('codigo');
+		$this->load->model('Personal_model');
+		$r=$this->Personal_model->controlcodigo($codigo);
+		$data['r']=$r;
+		$this->load->model('Menu_model');
+		$data['color']=$this->Menu_model->get_color('Personal');
+		$this->load->view('personal/controlcodigo',$data);
+	}			     
 	public function error_codigo(){  
 		$this->load->view('personal/error_codigo');    
 	} 

@@ -16,6 +16,13 @@ class Dosimetros_model extends CI_Model {
         }        
         return $salida;              
     }
+    public function buscartarjeta($nombre)
+    {
+        if (empty($salida)) { $salida=""; }    
+        $query = $this->db->query("select * from sys_poe.tarjetas where codigobarra='$nombre' order by id;");
+        $salida=$query->num_rows();
+        return $salida;         
+    }      
     public function nombreestatus($id)
     {
         if (empty($salida)) { $salida=""; } 
@@ -63,9 +70,10 @@ class Dosimetros_model extends CI_Model {
             }
         return $salida;         
     }    
-    public function idosimetros($id , $nombre , $estatus )
+    public function idosimetros($id , $nombre , $estatus, $tipo )
     {       
-        $query = $this->db->query("select * from sys_poe.itarjetas($id , '$nombre' , $estatus);");   
+        $sinceros=ltrim($nombre,'0');
+        $query = $this->db->query("select * from sys_poe.itarjetas($id , '$nombre' , $estatus,'$sinceros', $tipo);");   
         $salida=$query->result();      
     }    
     public function registro($codigo)
@@ -80,5 +88,59 @@ class Dosimetros_model extends CI_Model {
         $this->db->where('id', $id);
         $this->db->delete('sys_poe.tarjetas'); 
     }
-             
+    public function get_tipo()
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select * from sys_poe.tipo_dosimetro;");   
+        //$salida=$query->result();
+        foreach ($query->result() as $row)
+            {
+                $salida.="<option value=\"".$row->id."\">".$row->nombre."</option>";
+            }
+        return $salida;              
+    }
+    public function get_nombre($id)
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select * from sys_poe.tipo_dosimetro where id=$id;");   
+        //$salida=$query->result();
+        foreach ($query->result() as $row)
+            {
+                $salida=$row->nombre;
+            }
+        return $salida;              
+    }
+    public function registro_doc($id)
+    {
+        if (empty($salida)) { $salida=""; }        
+        $query = $this->db->query("select * from sys_poe.vactas where id=$id order  by id;");
+        $salida=$query->result();
+        return $salida;         
+    } 
+    public function vdosimetros($id)
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select * from sys_poe.vdosimetros where iddocumento=$id order  by id;");
+        $salida=$query->result();
+        return $salida;         
+    }  
+    public function contar_asignados($iddoc)
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select * from sys_poe.vdosimetros where iddocumento=$iddoc;");   
+        $salida=$query->num_rows();  
+        return $salida;               
+    }
+    public function listado_doc()
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select * from sys_poe.vdocu order  by iddocumento;");
+        $salida=$query->result();
+        return $salida;         
+    }
 }

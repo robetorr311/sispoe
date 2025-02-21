@@ -21,7 +21,8 @@ class Dosimetros extends MY_Controller {
 			$idusuario=$this->Usuario_model->idusuario_login($login);
 			$idcontrolador=$this->Controladores_model->get_id('Dosimetros');
 			$this->Sesion_model->actividad($idcontrolador,$idusuario , 1 , 5,$idsesion);		
-			$data['listado']=$this->Dosimetros_model->listado();		
+			$data['listado']=$this->Dosimetros_model->listado();
+			$data['tipos']=$this->Dosimetros_model->get_tipo();		
 			$this->load->model('Menu_model');
 			$data['color']=$this->Menu_model->get_color('Dosimetros');
 			$this->add_view('dosimetros/dosim_inicial_view',$data);
@@ -39,7 +40,8 @@ class Dosimetros extends MY_Controller {
 		$idusuario=$this->Usuario_model->idusuario_login($login);
 		$idcontrolador=$this->Controladores_model->get_id('Dosimetros');
 		$this->Sesion_model->actividad($idcontrolador,$idusuario , 1 , 6,$idsesion);		
-		$data['estatus']=$this->Dosimetros_model->select_estatus();	
+		$data['estatus']=$this->Dosimetros_model->select_estatus();
+		$data['tipos']=$this->Dosimetros_model->get_tipo();		
 		$codigo=$this->Dosimetros_model->get_id();
 		$data['codigo']=$codigo;
 		$this->load->model('Menu_model');
@@ -65,13 +67,18 @@ class Dosimetros extends MY_Controller {
 				$codigo=$row->id; 
 				$nombre=$row->nombre; 
 				$estatus=$row->estatus; 
+				$idtipo=$row->idtipotarjeta;
 				$idestatus=$row->idestatus; 
             }
+            $tipo=$this->Dosimetros_model->get_nombre($idtipo);
+            $opctipo="<option selected value=\"".$idtipo."\">".$tipo."</option>";
+            $tipos=$opctipo.$this->Dosimetros_model->get_tipo();
             $opcestatus="<option selected value=\"".$idestatus."\">".$estatus."</option>";
             $estatus=$opcestatus.$this->Dosimetros_model->select_estatus();
         	$data['codigo']=$id; 
 			$data['nombre']=$nombre; 
-			$data['estatus']=$estatus;    		
+			$data['estatus']=$estatus;
+			$data['tipos']=$tipos;    		
 		$this->load->model('Menu_model');
 		$data['color']=$this->Menu_model->get_color('Dosimetros');
 		$this->load->view('dosimetros/dosim_reg_view',$data);				
@@ -95,13 +102,18 @@ class Dosimetros extends MY_Controller {
 				$codigo=$row->id; 
 				$nombre=$row->nombre; 
 				$estatus=$row->estatus; 
-				$idestatus=$row->idestatus; 
+				$idestatus=$row->idestatus;
+				$idtipo=$row->idtipotarjeta; 
             }
+            $tipo=$this->Dosimetros_model->get_nombre($idtipo);
+            $opctipo="<option selected value=\"".$idtipo."\">".$tipo."</option>";
+            $tipos=$opctipo.$this->Dosimetros_model->get_tipo();            
             $opcestatus="<option selected value=\"".$idestatus."\">".$estatus."</option>";
             $estatus=$opcestatus.$this->Dosimetros_model->select_estatus();
         	$data['codigo']=$id; 
 			$data['nombre']=$nombre; 
-			$data['estatus']=$estatus;    		
+			$data['estatus']=$estatus;
+			$data['tipos']=$tipos;    		
 		$this->load->model('Menu_model');
 		$data['color']=$this->Menu_model->get_color('Dosimetros');
 		$this->load->view('dosimetros/dosim_edit_view',$data);							
@@ -120,13 +132,18 @@ class Dosimetros extends MY_Controller {
 		$this->Sesion_model->actividad($idcontrolador,$idusuario , 1 , 16,$idsesion);	
 		$codigo=$this->input->post('codigo'); 
 		$nombre=$this->input->post('nombre'); 
-		$estatus=$this->input->post('estatus'); 
-		$this->Dosimetros_model->idosimetros($codigo , $nombre , $estatus );
+		$estatus=$this->input->post('estatus');
+		$tipo=$this->input->post('tipo'); 
+		$this->Dosimetros_model->idosimetros($codigo , $nombre , $estatus, $tipo );
+            $ntipo=$this->Dosimetros_model->get_nombre($tipo);
+            $opctipo="<option selected value=\"".$tipo."\">".$ntipo."</option>";
+            $tipos=$opctipo.$this->Dosimetros_model->get_tipo();   		
             $opcestatus="<option selected value=\"".$estatus."\">".$this->Dosimetros_model->nombreestatus($estatus)."</option>";
             $estatus=$opcestatus.$this->Dosimetros_model->select_estatus();
         	$data['codigo']=$codigo; 
 			$data['nombre']=$nombre; 
-			$data['estatus']=$estatus;   
+			$data['estatus']=$estatus; 
+			$data['tipos']=$tipos;   
 		$this->load->model('Menu_model');
 		$data['color']=$this->Menu_model->get_color('Dosimetros');
 			$this->load->view('dosimetros/dosim_guardado_view',$data);
@@ -137,4 +154,18 @@ class Dosimetros extends MY_Controller {
     public function error_nombre(){
        $this->load->view('dosimetros/error_nombre');
     } 
+
+	public function buscartarjeta()
+	{
+		$this->load->model('Dosimetros_model');		
+		$nombre=$this->input->post('nombre');
+		$reg=$this->Dosimetros_model->buscartarjeta($nombre);
+		if($reg==0){
+			$data['reg']=0;
+		}			
+		else {
+			$data['reg']=1;
+		}
+		$this->load->view('dosimetros/buscartajetas',$data);
+	}    
 }	

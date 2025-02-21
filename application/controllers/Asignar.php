@@ -230,7 +230,8 @@ class Asignar extends MY_Controller {
 			$servicio=$row2->servicio; 
 			$fechai=$row2->fechainicio; 
 			$fechaf=$row2->fechafin;
-			$estudio=$row2->estudio;			 
+			$estudio=$row2->estudio;
+			$estado=$row2->estado;			 
         endforeach;
         $fei=explode('-',$fechai);
         if(strlen($fei[0])==4){
@@ -305,8 +306,10 @@ class Asignar extends MY_Controller {
 			$numero=$row->numero; 
 			$hdestino=$row->hdestino; 
 			$fechad=$row->date;
-			$idtipogenerado=$row->idtipogenerado;  
+			$idtipogenerado=$row->idtipogenerado; 
+			$estado=$this->Ubicacion_model->estado($hdestino); 
         endforeach;
+        
         switch ($idtipogenerado) {
         	case 1:
         		$establecimiento="TODOS LOS ESTABLECIMIENTOS";
@@ -331,7 +334,8 @@ class Asignar extends MY_Controller {
 			$servicio=$row2->servicio; 
 			$fechai=$row2->fechainicio; 
 			$fechaf=$row2->fechafin;
-			$estudio=$row2->estudio;			 
+			$estudio=$row2->estudio;
+			$estado=$row2->estado; 			 
         endforeach;
         $fei=explode('-',$fechai);
         if(strlen($fei[0])==4){
@@ -359,9 +363,9 @@ class Asignar extends MY_Controller {
 		$this->pdf->Cell(50,10,'Periodo: '.$fechainicio.' - '.$fechafin,0,1,'L');
 		$this->pdf->Cell(200,10,'Estado: '.utf8_decode($estado),0,1,'L');
 		$y=$this->pdf->GetY();
-		$this->pdf->SetWidths(array(10,30,100,30,30));
+		$this->pdf->SetWidths(array(10,30,70,30,30,30));
 		$this->pdf->Line($x, $y, $x + 200, $y);	
-    	$this->pdf->Row(array('No.','Codigo Personal','Nombre','Dosimetro','Observaciones'));
+    	$this->pdf->Row(array('No.','Codigo Personal','Nombre','Dosimetro','Tarjeta','Observaciones'));
     	$y=$this->pdf->GetY();
     	$this->pdf->Line($x, $y, $x + 200, $y);	
     	$n=0;		
@@ -369,9 +373,56 @@ class Asignar extends MY_Controller {
 			$n++;
 			$dosimetro=$row2->id; 
 			$idpersona=$row2->idpersona; 
-			$personal=$row2->personal; 
-    	$this->pdf->Row(array($n,$idpersona,utf8_decode($personal),$dosimetro,'')); 	 
-        endforeach;			
+			$personal=$row2->personal;
+			$tarjeta=$row2->tarjeta; 
+    	    $this->pdf->Row(array($n,$idpersona,utf8_decode($personal),$dosimetro,$tarjeta,'')); 
+        endforeach;
+        $y=$this->pdf->GetY();
+        $k=$n*10;
+        if($y<250){		
+		$this->pdf->SetY($y);    	
+    	$this->pdf->Line($x+30, $y+9 , $x + 70, $y+9);
+    	$this->pdf->Line($x+90, $y+9 , $x + 120, $y+9);    	
+    	$this->pdf->Line($x+140, $y+9 , $x + 190, $y+9);
+    	$this->pdf->Line($x+30, $y+19, $x + 70, $y+19);
+    	$this->pdf->Line($x+90, $y+19, $x + 120, $y+19);    	
+    	$this->pdf->Line($x+140, $y +19, $x + 190, $y +19);
+    	$this->pdf->Line($x, $y+29, $x + 190, $y+29);
+    	$this->pdf->SetY($y); 
+		$this->pdf->Cell(70,10,'Entregado por: ',0,0,'L');
+		$this->pdf->Cell(50,10,'Fecha: ',0,0,'L');
+		$this->pdf->Cell(50,10,'Firma: ',0,1,'L');
+		$this->pdf->Cell(70,10,'Recibido por: ',0,0,'L');
+		$this->pdf->Cell(50,10,'Fecha: ',0,0,'L');
+		$this->pdf->Cell(50,10,'Firma: ',0,1,'L');
+		$this->pdf->Cell(50,10,' ',0,1,'L');
+		$this->pdf->SetFont('Arial','B',10);
+		$this->pdf->Cell(200,10,utf8_decode('SE PROHIBE LA REPRODUCCIÓN TOTAL O PARCIAL DE ESTE CERTIFICADO SIN LA APROBACIÓN'),0,1,'C');
+		$this->pdf->Cell(200,10,'DEL LABORATORIO QUE LO EMITE',0,1,'C');    	    	
+    	}
+    	else{
+    		$this->pdf->AddPage();
+    		$y=$this->pdf->GetY();
+		$this->pdf->SetY($y);    	
+    	$this->pdf->Line($x+30, $y+9 , $x + 70, $y+9);
+    	$this->pdf->Line($x+90, $y+9 , $x + 120, $y+9);    	
+    	$this->pdf->Line($x+140, $y+9 , $x + 190, $y+9);
+    	$this->pdf->Line($x+30, $y+19, $x + 70, $y+19);
+    	$this->pdf->Line($x+90, $y+19, $x + 120, $y+19);    	
+    	$this->pdf->Line($x+140, $y +19, $x + 190, $y +19);
+    	$this->pdf->Line($x, $y+29, $x + 190, $y+29);
+    	$this->pdf->SetY($y); 
+		$this->pdf->Cell(70,10,'Entregado por: ',0,0,'L');
+		$this->pdf->Cell(50,10,'Fecha: ',0,0,'L');
+		$this->pdf->Cell(50,10,'Firma: ',0,1,'L');
+		$this->pdf->Cell(70,10,'Recibido por: ',0,0,'L');
+		$this->pdf->Cell(50,10,'Fecha: ',0,0,'L');
+		$this->pdf->Cell(50,10,'Firma: ',0,1,'L');
+		$this->pdf->Cell(50,10,' ',0,1,'L');
+		$this->pdf->SetFont('Arial','B',10);
+		$this->pdf->Cell(200,10,utf8_decode('SE PROHIBE LA REPRODUCCIÓN TOTAL O PARCIAL DE ESTE CERTIFICADO SIN LA APROBACIÓN'),0,1,'C');
+		$this->pdf->Cell(200,10,'DEL LABORATORIO QUE LO EMITE',0,1,'C');
+    	}
 
 		$this->pdf->Output();    	
     } 		    		

@@ -110,7 +110,7 @@
                               <div id="cont_correo">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                  <input type="text" name="correo" id="correo" class="form-control"  value="<?php echo $correo; ?>" placeholder="CORREO">
+                                  <input type="text" name="correo" id="correo" class="form-control"  value="<?php if(!empty($correo)) { echo $correo; } else { echo "SIN INFORMACION"; } ?>" placeholder="CORREO">
                                 </div>
                               </div>  
                             </div><!-- /.col -->
@@ -120,14 +120,29 @@
                               <div id="cont_telefono">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
-                                  <input type="text" name="telefono" id="telefono" class="form-control"  value="<?php echo $telefono; ?>" placeholder="TELEFONO">
-                                 <script type="text/javascript">
-                                  $("#telefono").inputmask({"mask": "(999) 999-9999"});
-                                </script>                                     
+                                  <input type="text" name="telefono" id="telefono" class="form-control"  value="<?php if(!empty($telefono)) { echo $telefono; } else { echo "SIN INFORMACION"; } ?>" placeholder="TELEFONO">                                    
                                 </div>
                               </div>  
                             </div><!-- /.col -->
-                          </div><!-- /.row -->                          
+                          </div><!-- /.row --> 
+                          <div class="row">
+                            <div class="col-xs-12">
+                              <div id="cont_activo">
+                                <div class="input-group">
+                                  <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                  <?php if($estatus==20){
+                                  ?>
+                                  <input type="radio" name="activo" id="activo" value="20" checked> Activo
+                                  <input type="radio" name="activo" id="inactivo" value="21" > No Activo
+<?php
+                                  } else { ?>
+                                  <input type="radio" name="activo" id="activo" value="20" > Activo
+                                  <input type="radio" name="activo" id="inactivo" value="21" checked> No Activo
+<?php } ?>                                
+                                </div>
+                              </div>  
+                            </div><!-- /.col -->
+                          </div><!-- /.row -->                                                     
                         </div><!-- /.box body datos personales -->
                       </div><!-- /.box datos personales -->
                     </div><!-- col-md-6 lado izquierdo-->
@@ -144,24 +159,7 @@
                               <div id="cont_nacionalidad">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                  <select name="nacionalidad" id="nacionalidad" class="form-control"  value="<?php echo $codigo; ?>">
-                                  <option selected value="0">NACIONALIDAD</option>
-                                <?php
-                                if($nacionalidad=='V'){ 
-                                ?>
-                                <option selected value="V">VENEZOLANO(A)</option>
-                                <?php
-                              }
-                              else {
-                              ?>
-                                <option selected value="E">EXTRANJERO(A)</option>
-                              <?php
-                            }
-                              ?>
-                              <option selected value="V">VENEZOLANO(A)</option>
-                              <option selected value="E">EXTRANJERO(A)</option>
-                                </select>                                  
-                                  </select>
+                                  <input type="text" name="nacionalidad" id="nacionalidad" class="form-control"  placeholder="NACIONALIDAD" value="<?php if(!empty($nacionalidad)) { echo $nacionalidad; } else { echo "VENEZOLANO"; } ?>">
                                 </div>
                               </div>  
                             </div><!-- /.col -->
@@ -171,10 +169,7 @@
                               <div id="cont_pais">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                  <select name="pais" id="pais" class="form-control" >
-                                  <option selected value="0">PAIS DE NACIMIENTO</option>
-                                  <?php echo $paises; ?>
-                                  </select>
+                                  <input type="text" name="pais" id="pais" class="form-control" placeholder="PAIS DE NACIMIENTO"  value="<?php if(!empty($pais)) { echo $pais; } else { echo "VENEZUELA"; } ?>">
                                 </div>
                               </div>  
                             </div><!-- /.col -->
@@ -184,7 +179,7 @@
                               <div id="cont_lugar">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-globe"></i></span>
-                                  <input type="text" name="lugar" id="lugar" class="form-control"  value="<?php echo $lugar; ?>" placeholder="LUGAR DE NACIMIENTO">
+                                  <input type="text" name="lugar" id="lugar" class="form-control"  value="<?php if(!empty($lugar)) { echo $lugar; } else { echo "SIN INFORMACION"; } ?>" placeholder="LUGAR DE NACIMIENTO">
                                 </div>
                               </div>  
                             </div><!-- /.col -->
@@ -194,7 +189,7 @@
                               <div id="cont_profesion">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                                  <input type="text" name="profesion" id="profesion" class="form-control"  value="<?php echo $profesion; ?>" placeholder="PROFESION">
+                                  <input type="text" name="profesion" id="profesion" class="form-control"  value="<?php if(!empty($profesion)) { echo $profesion; } else { echo "SIN INFORMACION"; } ?>" placeholder="PROFESION">
                                 </div>
                               </div>  
                             </div><!-- /.col -->
@@ -204,7 +199,7 @@
                               <div id="cont_especialidad">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                                  <input type="text" name="especialidad" id="especialidad" class="form-control"  value="<?php echo $especialidad; ?>" placeholder="ESPECIALIDAD">
+                                  <input type="text" name="especialidad" id="especialidad" class="form-control"  value="<?php if(!empty($especialidad)) { echo $especialidad; } else { echo "SIN INFORMACION"; } ?>" placeholder="ESPECIALIDAD">
                                 </div>
                               </div>  
                             </div><!-- /.col -->
@@ -214,7 +209,7 @@
                             <div id="cont_direccion">
                               <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-pencil-square-o"></i></span>
-                                <textarea class="form-control"  name="direccion" id="direccion" placeholder="DIRECCION"><?php echo $direccion; ?></textarea>
+                                <textarea class="form-control"  name="direccion" id="direccion" placeholder="DIRECCION"><?php if(!empty($direccion)) { echo $direccion; } else { echo "SIN INFORMACION"; } ?></textarea>
                               </div>
                             </div>  
                             </div><!-- /.col -->

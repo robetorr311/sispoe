@@ -8,14 +8,21 @@ class Personal_model extends CI_Model {
     {
         if (empty($salida)) { $salida=""; } 
          
-        $query = $this->db->query("select * from nextval('sys_poe.personal_id_seq');");   
+        $query = $this->db->query("select * from sys_poe.get_id_persona();");   
         $salida=$query->result();
         foreach ($query->result() as $row)
         {
-                $salida=$row->nextval;
+                $salida=$row->get_id_persona;
         }        
         return $salida;              
     }
+    public function buscacedula($cedula)
+    {
+        if (empty($salida)) { $salida=""; }    
+        $query = $this->db->query("select * from sys_poe.personal where cedula='$cedula' order by id;");
+        $salida=$query->num_rows();
+        return $salida;         
+    }    
     public function get_tmp_id()
     {
         if (empty($salida)) { $salida=""; } 
@@ -27,7 +34,19 @@ class Personal_model extends CI_Model {
                 $salida=$row->nextval;
         }        
         return $salida;              
-    }    
+    }
+    public function controlcodigo($codigo)
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select count(id) from sys_poe.personal where id=$codigo;");
+        $salida=$query->result();
+        foreach ($query->result() as $row)
+        {
+                $salida=$row->count;
+        }        
+        return $salida;              
+    }        
     public function nombrecargo($id)
     {
         if (empty($salida)) { $salida=""; } 
@@ -106,9 +125,9 @@ class Personal_model extends CI_Model {
         return $salida;         
     }    
     
-    public function ipersonal($id , $nombre , $apellido1 , $apellido2 , $cedula , $telefono , $fechadenacimiento , $sexo , $nombre2 , $pais , $direccion , $correo , $profesion , $especialidad , $nacionalidad , $lugar )
+    public function ipersonal($id , $nombre , $apellido1 , $apellido2 , $cedula , $telefono , $fechadenacimiento , $sexo , $nombre2 , $pais , $direccion , $correo , $profesion , $especialidad , $nacionalidad , $lugar, $activo )
     {       
-        $query = $this->db->query("select * from sys_poe.ipersonal($id , '$nombre' , '$apellido1' , '$apellido2' , '$cedula' , '$telefono' , '$fechadenacimiento' , '$sexo' , '$nombre2' , '$pais' , '$direccion' , '$correo' , '$profesion' , '$especialidad' , '$nacionalidad' , '$lugar');");   
+        $query = $this->db->query("select * from sys_poe.ipersonal($id , '$nombre' , '$apellido1' , '$apellido2' , '$cedula' , '$telefono' , '$fechadenacimiento' , '$sexo' , '$nombre2' , '$pais' , '$direccion' , '$correo' , '$profesion' , '$especialidad' , '$nacionalidad' , '$lugar', $activo);");   
         $salida=$query->result();      
     }    
     public function registro($codigo)
@@ -272,7 +291,8 @@ class Personal_model extends CI_Model {
                 $salida=$row->get_tmp_ant;
             } 
         return $salida;         
-    } 
+    }
+
     public function count_tmp_ant($idpersonal){
         if (empty($salida)) { $salida=""; } 
          

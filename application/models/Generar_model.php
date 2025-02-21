@@ -81,7 +81,18 @@ class Generar_model extends CI_Model {
                 $salida=$row->validargenerados;
         }        
         return $salida;              
-    }   
+    }
+    public function validargeneradosxserv($idestablecimiento , $fechai , $fechaf, $tipo, $servicio)
+    {
+        if (empty($salida)) { $salida=""; }  
+        $query = $this->db->query("select * from sys_poe.validargenerados_s($idestablecimiento,$tipo,'$fechai','$fechaf',$servicio);");   
+        $salida=$query->result();
+        foreach ($query->result() as $row)
+        {
+                $salida=$row->validargenerados;
+        }        
+        return $salida;              
+    }       
     public function generarxestado($estado,$idtipodocumento , $fechai , $fechaf, $tipo ,$idusuario )
     {
         if (empty($salida)) { $salida=""; }  
@@ -97,13 +108,13 @@ class Generar_model extends CI_Model {
     public function generar_est_s($idestablecimiento , $idtipodocumento , $fechai , $fechaf, $tipo ,$idusuario,$idservicio )
     {
         if (empty($salida)) { $salida=""; }  
-        $query = $this->db->query("select * from sys_poe.generar_esti_s($idestablecimiento , $idtipodocumento , '$fechai' , '$fechaf', $tipo ,$idusuario, $idservicio );");   
-        $salida=$query->result();            
+        $query = $this->db->query("select * from sys_poe.generar_est_s($idtipodocumento ,$idestablecimiento, '$fechai' , '$fechaf', $tipo ,$idusuario, $idservicio );");   
+        $salida=$query->result();
     }
     public function generar_est($idestablecimiento , $idtipodocumento , $fechai , $fechaf, $tipo ,$idusuario )
     {
         if (empty($salida)) { $salida=""; }  
-        $query = $this->db->query("select * from sys_poe.generar_esti($idestablecimiento , $idtipodocumento , '$fechai' , '$fechaf', $tipo ,$idusuario );");   
+        $query = $this->db->query("select * from sys_poe.generar_est($idtipodocumento, $idestablecimiento ,  '$fechai' , '$fechaf', $tipo ,$idusuario );");   
         $salida=$query->result();           
     }
 
@@ -180,7 +191,7 @@ class Generar_model extends CI_Model {
     {
         if (empty($salida)) { $salida=""; } 
          
-        $query = $this->db->query("select * from sys_poe.vdosimetrospreparados where iddocumento=$id order by id;");
+        $query = $this->db->query("select * from sys_poe.vdosimetrospreparados where iddocumento=$id order by servicio;");
         $salida=$query->result();
         return $salida;         
     }

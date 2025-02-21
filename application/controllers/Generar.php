@@ -136,6 +136,20 @@ class Generar extends MY_Controller {
 		$data['color']=$this->Menu_model->get_color('Generar');
 		$this->load->view('generar/validacion',$data);				
 	}
+	public function validardosimxserv()
+	{
+		$this->load->model('Generar_model');
+		$establecimiento=$this->input->post('id');
+		$fechai=$this->input->post('fechai');		
+		$fechaf=$this->input->post('fechaf');
+		$tipo=$this->input->post('tipo');
+		$servicio=$this->input->post('servicio');		
+		$data['validacion']=$this->Generar_model->validargeneradosxserv($establecimiento , $fechai , $fechaf, $tipo,$servicio);
+		$this->load->model('Menu_model');
+		$data['color']=$this->Menu_model->get_color('Generar');
+		$this->load->view('generar/validacion',$data);				
+	}
+
 	public function pestablecimientos()
 	{
 		$this->load->model('Generar_model');
@@ -229,7 +243,7 @@ class Generar extends MY_Controller {
 		else {
 			$nombre=$this->Personal_model->nombreestablecimiento($establecimiento);
 			$iddoc=$this->Generar_model->get_id();			
-			$this->Generar_model->generar_est_s($establecimiento , $iddoc , $fechai , $fechaf, $estudio ,$idusuario,$servicio );
+			$salida=$this->Generar_model->generar_est_s($establecimiento , $iddoc , $fechai , $fechaf, $estudio ,$idusuario,$servicio );
 			$tabla=$this->Generar_model->tarjetas($iddoc);
 			$conteo=$this->Generar_model->count_tarjetas($iddoc);						
 		}		
@@ -334,7 +348,7 @@ class Generar extends MY_Controller {
 	{
 		$x=5;
 		$y=5;
-		$ancho=35;
+		$ancho=32;
 		$alto=10;
 		$this->load->model('Establecimientos_model');
 		$this->load->model('Generar_model');
@@ -400,22 +414,22 @@ class Generar extends MY_Controller {
 			                if ($idpersona==0) { $personal='TESTIGO'; }            
 							$this->pdf->SetDrawColor(0,0,0);
 							$this->pdf->SetFillColor(255,255,255);
-							$this->pdf->Polygon(array($x,$y,$x+30,$y,$x+35,$y+5,$x+35,$y+49,$x,$y+49),'FD');
-							$this->pdf->SetFont('Arial','B',7);				
+							$this->pdf->Polygon(array($x,$y,$x+27,$y,$x+32,$y+5,$x+32,$y+45,$x,$y+45),'FD');
+							$this->pdf->SetFont('Arial','B',5);				
 							$this->pdf->SetXY($x,$y);
 							$this->pdf->drawTextBox($nrodosimetro, $ancho, $alto, 'L', 'M',false);
-							$this->pdf->SetFont('Arial','B',7);
+							$this->pdf->SetFont('Arial','B',5);
 							$this->pdf->SetXY($x,$y+7);
 							$this->pdf->drawTextBox(utf8_decode($establecimiento), $ancho, $alto, 'L', 'M',false);
-							$this->pdf->SetXY($x,$y+16);
-							$this->pdf->SetFont('Arial','B',6);		
+							$this->pdf->SetXY($x,$y+13);
+							$this->pdf->SetFont('Arial','B',4);		
 							$this->pdf->drawTextBox($idpersona.' '.utf8_decode($personal), $ancho, $alto, 'L', 'M',false);		
-							$this->pdf->Code39($x+2, $y+22, $dosimetro,0.8,7);
-							$this->pdf->SetXY($x,$y+25);
-							$this->pdf->SetFont('Arial','B',7);
-							$this->pdf->SetFont('Arial','',6);		
+							$this->pdf->Code39($x+2, $y+19, $dosimetro,0.7,5);
+							$this->pdf->SetXY($x,$y+20);
+							$this->pdf->SetFont('Arial','B',5);
+							$this->pdf->SetFont('Arial','',5);		
 							$this->pdf->drawTextBox($fecha.' Estab:'.$idestablecimiento, $ancho, $alto, 'L', 'M',false);
-							$this->pdf->SetFont('Arial','B',8);
+							$this->pdf->SetFont('Arial','B',6);
 							$this->pdf->SetXY($x,$y+30);		
 							$this->pdf->drawTextBox(utf8_decode($servicio), $ancho, $alto, 'L', 'M',false);
 							$x=$x+40;             
@@ -457,22 +471,22 @@ class Generar extends MY_Controller {
 			                if ($idpersona==0) { $personal='TESTIGO'; }                 	            
 							$this->pdf->SetDrawColor(0,0,0);
 							$this->pdf->SetFillColor(255,255,255);
-							$this->pdf->Polygon(array($x,$y,$x+30,$y,$x+35,$y+5,$x+35,$y+49,$x,$y+49),'FD');
-							$this->pdf->SetFont('Arial','B',7);				
+							$this->pdf->Polygon(array($x,$y,$x+27,$y,$x+32,$y+5,$x+32,$y+45,$x,$y+45),'FD');
+							$this->pdf->SetFont('Arial','B',5);				
 							$this->pdf->SetXY($x,$y);
 							$this->pdf->drawTextBox($nrodosimetro, $ancho, $alto, 'L', 'M',false);
-							$this->pdf->SetFont('Arial','B',7);
+							$this->pdf->SetFont('Arial','B',5);
 							$this->pdf->SetXY($x,$y+7);
 							$this->pdf->drawTextBox(utf8_decode($establecimiento), $ancho, $alto, 'L', 'M',false);
-							$this->pdf->SetXY($x,$y+16);
-							$this->pdf->SetFont('Arial','B',6);		
+							$this->pdf->SetXY($x,$y+13);
+							$this->pdf->SetFont('Arial','B',4);		
 							$this->pdf->drawTextBox($idpersona.' '.utf8_decode($personal), $ancho, $alto, 'L', 'M',false);		
-							$this->pdf->Code39($x+2, $y+22, $dosimetro,0.8,7);
-							$this->pdf->SetXY($x,$y+25);
-							$this->pdf->SetFont('Arial','B',7);
-							$this->pdf->SetFont('Arial','',6);		
+							$this->pdf->Code39($x+2, $y+19, $dosimetro,0.7,5);
+							$this->pdf->SetXY($x,$y+20);
+							$this->pdf->SetFont('Arial','B',5);
+							$this->pdf->SetFont('Arial','',5);		
 							$this->pdf->drawTextBox($fecha.' Estab:'.$idestablecimiento, $ancho, $alto, 'L', 'M',false);
-							$this->pdf->SetFont('Arial','B',8);
+							$this->pdf->SetFont('Arial','B',6);
 							$this->pdf->SetXY($x,$y+30);		
 							$this->pdf->drawTextBox(utf8_decode($servicio), $ancho, $alto, 'L', 'M',false);
 							$x=$x+40;
@@ -533,20 +547,20 @@ class Generar extends MY_Controller {
 			                }		                	            
 						$this->pdf->SetDrawColor(0,0,0);
 						$this->pdf->SetFillColor(255,255,255);
-						$this->pdf->Polygon(array($x,$y,$x+30,$y,$x+35,$y+5,$x+35,$y+49,$x,$y+49),'FD');
-						$this->pdf->SetFont('Arial','B',7);				
+						$this->pdf->Polygon(array($x,$y,$x+27,$y,$x+32,$y+5,$x+32,$y+45,$x,$y+45),'FD');
+						$this->pdf->SetFont('Arial','B',5);				
 						$this->pdf->SetXY($x,$y);
 						$this->pdf->drawTextBox($nrodosimetro, $ancho, $alto, 'L', 'M',false);
-						$this->pdf->SetFont('Arial','B',7);
+						$this->pdf->SetFont('Arial','B',5);
 						$this->pdf->SetXY($x,$y+7);
 						$this->pdf->drawTextBox(utf8_decode($establecimiento), $ancho, $alto, 'L', 'M',false);
-						$this->pdf->SetXY($x,$y+16);		
+						$this->pdf->SetXY($x,$y+13);		
 						$this->pdf->drawTextBox($idpersona.' '.utf8_decode($personal), $ancho, $alto, 'L', 'M',false);		
-						$this->pdf->Code39($x+2, $y+22, $dosimetro,0.8,7);
-						$this->pdf->SetXY($x,$y+25);
-						$this->pdf->SetFont('Arial','',6);		
+						$this->pdf->Code39($x+2, $y+19, $dosimetro,0.7,5);
+						$this->pdf->SetXY($x,$y+20);
+						$this->pdf->SetFont('Arial','',5);		
 						$this->pdf->drawTextBox($fecha.' Estab:'.$idestablecimiento, $ancho, $alto, 'L', 'M',false);
-						$this->pdf->SetFont('Arial','B',8);
+						$this->pdf->SetFont('Arial','B',6);
 						$this->pdf->SetXY($x,$y+30);		
 						$this->pdf->drawTextBox(utf8_decode($servicio), $ancho, $alto, 'L', 'M',false);
 						$x=$x+40;             
@@ -587,20 +601,20 @@ class Generar extends MY_Controller {
 			                }		                	            
 						$this->pdf->SetDrawColor(0,0,0);
 						$this->pdf->SetFillColor(255,255,255);
-						$this->pdf->Polygon(array($x,$y,$x+30,$y,$x+35,$y+5,$x+35,$y+49,$x,$y+49),'FD');
-						$this->pdf->SetFont('Arial','B',7);				
+						$this->pdf->Polygon(array($x,$y,$x+27,$y,$x+32,$y+5,$x+32,$y+45,$x,$y+45),'FD');
+						$this->pdf->SetFont('Arial','B',5);				
 						$this->pdf->SetXY($x,$y);
 						$this->pdf->drawTextBox($nrodosimetro, $ancho, $alto, 'L', 'M',false);
-						$this->pdf->SetFont('Arial','B',7);
+						$this->pdf->SetFont('Arial','B',5);
 						$this->pdf->SetXY($x,$y+7);
 						$this->pdf->drawTextBox(utf8_decode($establecimiento), $ancho, $alto, 'L', 'M',false);
-						$this->pdf->SetXY($x,$y+16);		
+						$this->pdf->SetXY($x,$y+13);		
 						$this->pdf->drawTextBox($idpersona.' '.utf8_decode($personal), $ancho, $alto, 'L', 'M',false);		
-						$this->pdf->Code39($x+2, $y+22, $dosimetro,0.8,7);
-						$this->pdf->SetXY($x,$y+25);
-						$this->pdf->SetFont('Arial','',6);		
+						$this->pdf->Code39($x+2, $y+19, $dosimetro,0.7,5);
+						$this->pdf->SetXY($x,$y+20);
+						$this->pdf->SetFont('Arial','',5);		
 						$this->pdf->drawTextBox($fecha.' Estab:'.$idestablecimiento, $ancho, $alto, 'L', 'M',false);
-						$this->pdf->SetFont('Arial','B',8);
+						$this->pdf->SetFont('Arial','B',6);
 						$this->pdf->SetXY($x,$y+30);		
 						$this->pdf->drawTextBox(utf8_decode($servicio), $ancho, $alto, 'L', 'M',false);
 						$x=$x+40;
@@ -661,20 +675,20 @@ class Generar extends MY_Controller {
 			                }	                	            
 					$this->pdf->SetDrawColor(0,0,0);
 					$this->pdf->SetFillColor(255,255,255);
-					$this->pdf->Polygon(array($x,$y,$x+30,$y,$x+35,$y+5,$x+35,$y+49,$x,$y+49),'FD');
-					$this->pdf->SetFont('Arial','B',7);				
+					$this->pdf->Polygon(array($x,$y,$x+79,$y,$x+24,$y+5,$x+24,$y+58,$x,$y+58),'FD');
+					$this->pdf->SetFont('Arial','B',5);				
 					$this->pdf->SetXY($x,$y);
 					$this->pdf->drawTextBox($nrodosimetro, $ancho, $alto, 'L', 'M',false);
-					$this->pdf->SetFont('Arial','B',7);
+					$this->pdf->SetFont('Arial','B',5);
 					$this->pdf->SetXY($x,$y+7);
 					$this->pdf->drawTextBox(utf8_decode($establecimiento), $ancho, $alto, 'L', 'M',false);
-					$this->pdf->SetXY($x,$y+16);		
+					$this->pdf->SetXY($x,$y+13);		
 					$this->pdf->drawTextBox($idpersona.' '.utf8_decode($personal), $ancho, $alto, 'L', 'M',false);		
-					$this->pdf->Code39($x+2, $y+22, $dosimetro,0.8,7);
-					$this->pdf->SetXY($x,$y+25);
-					$this->pdf->SetFont('Arial','',6);		
+					$this->pdf->Code39($x+2, $y+19, $dosimetro,0.7,5);
+					$this->pdf->SetXY($x,$y+20);
+					$this->pdf->SetFont('Arial','',5);		
 					$this->pdf->drawTextBox($fecha.' Estab:'.$idestablecimiento, $ancho, $alto, 'L', 'M',false);
-					$this->pdf->SetFont('Arial','B',8);
+					$this->pdf->SetFont('Arial','B',6);
 					$this->pdf->SetXY($x,$y+30);		
 					$this->pdf->drawTextBox(utf8_decode($servicio), $ancho, $alto, 'L', 'M',false);
 					$x=$x+40;             
@@ -716,20 +730,20 @@ class Generar extends MY_Controller {
 			                }	                
 					$this->pdf->SetDrawColor(0,0,0);
 					$this->pdf->SetFillColor(255,255,255);
-					$this->pdf->Polygon(array($x,$y,$x+30,$y,$x+35,$y+5,$x+35,$y+49,$x,$y+49),'FD');
-					$this->pdf->SetFont('Arial','B',7);				
+					$this->pdf->Polygon(array($x,$y,$x+79,$y,$x+24,$y+5,$x+24,$y+58,$x,$y+58),'FD');
+					$this->pdf->SetFont('Arial','B',5);				
 					$this->pdf->SetXY($x,$y);
 					$this->pdf->drawTextBox($nrodosimetro, $ancho, $alto, 'L', 'M',false);
-					$this->pdf->SetFont('Arial','B',7);
+					$this->pdf->SetFont('Arial','B',5);
 					$this->pdf->SetXY($x,$y+7);
 					$this->pdf->drawTextBox(utf8_decode($establecimiento), $ancho, $alto, 'L', 'M',false);
-					$this->pdf->SetXY($x,$y+16);		
+					$this->pdf->SetXY($x,$y+13);		
 					$this->pdf->drawTextBox($idpersona.' '.utf8_decode($personal), $ancho, $alto, 'L', 'M',false);		
-					$this->pdf->Code39($x+2, $y+22, $dosimetro,0.8,7);
-					$this->pdf->SetXY($x,$y+25);
-					$this->pdf->SetFont('Arial','',6);		
+					$this->pdf->Code39($x+2, $y+19, $dosimetro,0.7,5);
+					$this->pdf->SetXY($x,$y+20);
+					$this->pdf->SetFont('Arial','',5);		
 					$this->pdf->drawTextBox($fecha.' Estab:'.$idestablecimiento, $ancho, $alto, 'L', 'M',false);
-					$this->pdf->SetFont('Arial','B',8);
+					$this->pdf->SetFont('Arial','B',6);
 					$this->pdf->SetXY($x,$y+30);		
 					$this->pdf->drawTextBox(utf8_decode($servicio), $ancho, $alto, 'L', 'M',false);
 					$x=$x+40;
