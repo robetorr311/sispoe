@@ -143,4 +143,25 @@ class Dosimetros_model extends CI_Model {
         $salida=$query->result();
         return $salida;         
     }
+    public function ver_documentos()
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select * from sys_poe.vdocumentos order by date;");
+        $salida=$query->result();
+        return $salida;         
+    }
+    public function get_dosimetros($id)
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select * from sys_poe.vdosimetros where iddocumento=$id;");
+        $salida=$query->result();
+        return $salida;         
+    }
+    public function anular($id)
+    {       
+        $query = $this->db->query("select * from sys_poe.anular_dosimetros($id);");   
+        $salida=$query->result();      
+    }
 }

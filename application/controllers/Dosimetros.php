@@ -167,5 +167,43 @@ class Dosimetros extends MY_Controller {
 			$data['reg']=1;
 		}
 		$this->load->view('dosimetros/buscartajetas',$data);
-	}    
-}	
+	}
+	public function buscar_actas()
+	{
+		$this->load->model('Sesion_model');
+		$this->load->model('Usuario_model');
+		$this->load->library('session');
+		$this->load->model('Dosimetros_model');
+		$this->load->model('Menu_model');
+		$data['color']=$this->Menu_model->get_color('Generar');
+		$login= $this->session->userdata('username');
+		$idsesion= $this->session->userdata('idsesion');
+		$nombre=$this->input->post('nombre');
+		$documentos=$this->Dosimetros_model->ver_documentos();
+      $data['documentos']=$documentos;
+		$this->add_view('documento/documento_inicial_view',$data);
+	}   
+	public function get_dosimetros()
+	{
+		$this->load->model('Sesion_model');
+		$this->load->model('Usuario_model');
+		$this->load->library('session');
+		$this->load->model('Dosimetros_model');
+		$this->load->model('Menu_model');
+		$id=$this->input->post('id');
+		$data['color']=$this->Menu_model->get_color('Generar');
+		$login= $this->session->userdata('username');
+		$idsesion= $this->session->userdata('idsesion');
+		$nombre=$this->input->post('nombre');
+		$dosimetros=$this->Dosimetros_model->get_dosimetros($id);
+      $data['dosimetros']=$dosimetros;
+		$this->load->view('documento/modal_dosimetros',$data);
+	} 
+	public function anular()
+	{
+		$this->load->model('Dosimetros_model');
+		$id=$this->input->post('id');
+		$dosimetros=$this->Dosimetros_model->anular($id);
+      $data['mensaje']='Dosimetros seleccionados anulados, tarjetas liberadas';
+		$this->load->view('documento/mensaje',$data);
+	} }	
