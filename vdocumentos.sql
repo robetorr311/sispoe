@@ -19,7 +19,36 @@ CREATE OR REPLACE VIEW sys_poe.vdocumentos
   documento.estatus not in (11,13,15,16)
   ORDER BY documento.fecha DESC;
 
-ALTER TABLE sys_poe.vdocumentos
+ALTER TABLE sys_poe.vdocumentos OWNER TO postgres;
+
+CREATE OR REPLACE VIEW sys_poe.vdosimetros
+ AS
+ SELECT dosimetropersona.id,
+    dosimetropersona.idtarjeta,
+    dosimetropersona.idpersona,
+    dosimetropersona.iddocumento,
+    dosimetropersona.numero,
+    dosimetropersona.estatus,
+    dosimetropersona.idestablecimiento,
+    dosimetropersona.fechagenerado AS fecha,
+    sys_poe.establecimientonombre(dosimetropersona.idestablecimiento) AS establecimiento,
+    sys_poe.personalnombre(dosimetropersona.idpersona) AS personal,
+    sys_poe.servicionombre(dosimetropersona.idservicio) AS servicio,
+    sys_poe.get_tarjeta(dosimetropersona.idtarjeta) AS tarjeta,
+    dosimetropersona.fechainicio,
+    dosimetropersona.fechafin,
+    dosimetropersona.idtipodosimetro AS idestudio,
+    sys_poe.tipodosimetronombre(dosimetropersona.idtipodosimetro) AS estudio,
+    sys_poe.activador_recepcion(dosimetropersona.id) AS recibir,
+    sys_poe.getestablecimientoestado(dosimetropersona.idestablecimiento) AS estado,
+    sys_poe.estatusnombre(dosimetropersona.estatus) AS nombreestatus
+   FROM sys_poe.dosimetropersona
+  ORDER BY dosimetropersona.id;
+
+ALTER TABLE sys_poe.vdosimetros
+    OWNER TO postgres;
+
+
 
 CREATE OR REPLACE FUNCTION sys_poe.anular_dosimetros(
    in_id bigint)

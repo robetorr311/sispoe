@@ -13,6 +13,7 @@
                         <th>Tarjeta</th>
                         <th>Nombre</th>
                         <th>Servicio</th>
+                        <th>Estatus</th>
                         <th>Controles</th>
                       </tr>
                     </thead>
@@ -22,6 +23,7 @@
                         <th>Tarjeta</th>
                         <th>Nombre</th>
                         <th>Servicio</th>
+                        <th>Estatus</th>
                         <th>Controles</th>
                       </tr>
                     </tfoot>
@@ -33,6 +35,7 @@
                 <td><?php echo $row->tarjeta; ?></td>
                 <td><?php echo $row->personal; ?></td>
                 <td><?php echo $row->servicio; ?></td>
+                <td><?php echo $row->nombreestatus; ?></td>
                 <td><input type="checkbox" class="check_box" data-id="<?php echo $row->id; ?>" name="dosimetropersona" id="dosimetropersona"></td>
             </tr>
           <?php endforeach; ?>

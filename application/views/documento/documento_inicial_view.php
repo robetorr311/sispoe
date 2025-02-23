@@ -51,7 +51,6 @@
                   <a type="button" href="<?php echo base_url(); ?>index.php/Asignar/acta?id=<?php echo $row->id; ?>" target="blank" class="btn btn-block btn-warning btn-xs">Acta de Entrega</a>
                   <a type="button" href="<?php echo base_url(); ?>index.php/Asignar/constancia?id=<?php echo $row->id; ?>" target="blank" class="btn btn-block btn-warning btn-xs">Constancia de Entrega</a> 
                 <?php } ?>
-                  <a type="button" class="btn btn-block <?php echo $color; ?> btn-xs" onclick="anular('<?php echo $row->id; ?>');">Anular</a>
                   <a type="button" onclick="fdosimetro(<?php echo $row->id; ?>);" class="btn btn-block btn-warning btn-xs">Ver Dosimetros</a> 
 
                 </td>
@@ -82,8 +81,8 @@
                     <div id="listado_dosimetros"></div>
                   </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-block btn-warning btn-xs" id="select_all"> Seleccionar todos</a>
-                  <button type="button" class="btn btn-block btn-warning btn-xs" id="anular_selected"> Anular seleccionados</a>
+                  <button type="button" class="btn btn-warning btn-xs" id="select_all"> Seleccionar todos</a>
+                  <button type="button" class="btn btn-warning btn-xs" id="anular_selected"> Anular seleccionados</a>
                   <button type="button" class="btn btn-warning"  data-dismiss="modal" >Cerrar</button>
                 </div>              
                   </div>
