@@ -1,3 +1,32 @@
+function cambiar() {
+  var codigo=$('#codigo').val();
+  $.ajax({
+    url:  base_url + '/Personal/cambiar',
+    type: 'POST',
+    async: true,
+    data: { codigo: codigo },
+    success: function(respuesta) {
+      $('#cont_codigo').html((respuesta));
+      $("#personal").submit(function() {
+          return false;
+      });  
+    }  
+  });
+}
+function validacedula() {
+  var cedula=$('#cedula').val();
+    buscarcedula(cedula, function(resultado){ 
+        r = resultado;
+        if(resultado>0){
+          $('#imp_cedula').attr('class','input-group has-error');
+          alert ('Se ha detectado duplicado de cedula!!');         
+        }
+        else {
+          $('#imp_cedula').attr('class','input-group');
+          $('#error-msg').html('OK!!');
+       }
+    });
+}
 function editar(id) {
   $.ajax({
     url:  base_url + '/Personal/editar',
@@ -62,6 +91,10 @@ function guardar() {
   var especialidad=$('#especialidad').val();
   var nacionalidad=$('#nacionalidad').val();
   var lugar=$('#lugar').val();
+  var activo=20;
+  if ($("#inactivo").is(':checked')){
+    activo='21';
+  }  
   var med=0;
   var r=0;
   if(!codigo) med=1;
@@ -70,7 +103,7 @@ function guardar() {
   if(!cedula) med=1;
   if(!telefono) med=1;
   if(!fecha) med=1;
-  if(!sexo) med=1;
+  if(sexo=='0') med=1;
   if(!pais) med=1;
   if(!direccion) med=1;
   if(!correo) med=1;
@@ -85,7 +118,7 @@ function guardar() {
       if(!cedula) error_cedula();
       if(!telefono) error_telefono();
       if(!fecha) error_fecha();
-      if(!sexo) error_sexo();
+      if(sexo=='0') alert('Falto seleccionar sexo');
       if(!pais) error_pais();
       if(!direccion) error_direccion();
       if(!correo) error_correo();
@@ -118,7 +151,8 @@ function guardar() {
                 profesion: profesion,
                 especialidad: especialidad,
                 nacionalidad: nacionalidad,
-                lugar: lugar      
+                lugar: lugar,
+                activo: activo      
             },
           success: function(respuesta) {
             $('#container').html((respuesta));
@@ -434,4 +468,62 @@ function tablatemporal(id) {
       callback(resultado);      
     }
   });    
-  }  
+  }
+function verificarcodigo() {
+  var codigo=$('#codigo').val();
+      controlcodigo(codigo, function(resultado){ 
+        r = resultado;
+        if(resultado>0){
+          error_codigo();         
+        }
+        else {
+          $.ajax({
+            url:  base_url + '/Personal/codigocambiado',
+            type: 'POST',
+            async: true,    
+            data: {
+                codigo: codigo,   
+            },
+          success: function(respuesta) {
+            $('#container').html((respuesta));
+          }  
+          }); 
+        }
+      });
+}
+  function controlcodigo(codigo, callback) {
+  $.ajax({
+    url:  base_url + '/Personal/controlcodigo',
+    type: 'POST',
+    async: true,
+    data: { codigo:codigo  },
+    success: function(respuesta) {
+      var resp=respuesta;
+      if(resp=='1'){
+        resultado = 1;
+      }
+      else{
+        resultado = 0;
+      }
+      callback(resultado);      
+    }
+  });    
+  }
+  function buscarcedula(cedula, callback) {
+  $.ajax({
+    url:  base_url + '/Personal/buscarcedula',
+    type: 'POST',
+    async: true,
+    data: { cedula:cedula  },
+    success: function(respuesta) {
+      var resp=respuesta;
+      if(resp=='0'){
+        resultado = 0;
+      }
+      else{
+        resultado = 1;
+      }
+      callback(resultado);      
+    }
+  });    
+  }

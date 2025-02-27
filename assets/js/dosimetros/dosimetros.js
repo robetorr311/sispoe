@@ -1,3 +1,34 @@
+function buscartarjeta() {
+  var nombre=$('#nombre').val();
+    btarjeta(nombre, function(resultado){ 
+        r = resultado;
+        if(resultado>0){
+          $('#imp_nombre').attr('class','input-group has-error');
+          alert ('Se ha detectado duplicado de tarjeta!!');         
+        }
+        else {
+          $('#imp_nombre').attr('class','input-group');
+       }
+    });
+}
+function btarjeta(nombre, callback) {
+  $.ajax({
+    url:  base_url + '/Dosimetros/buscartarjeta',
+    type: 'POST',
+    async: true,
+    data: { nombre:nombre  },
+    success: function(respuesta) {
+      var resp=respuesta;
+      if(resp=='0'){
+        resultado = 0;
+      }
+      else{
+        resultado = 1;
+      }
+      callback(resultado);      
+    }
+  });    
+  }
 function editar(id) {
   $.ajax({
     url:  base_url + '/Dosimetros/editar',
@@ -30,15 +61,18 @@ function registro(id) {
 function guardar() {
   var codigo=$('#codigo').val(); 
   var nombre=$('#nombre').val(); 
-  var estatus=$('#estatus').val(); 
+  var estatus=$('#estatus').val();
+  var tipo=$('#tipo').val(); 
   var med=0;
   var r=0;
   if(!codigo) med=1;
   if(!nombre) med=1;
+  if(!tipo) med=1;
   if(!comprueba(estatus)) med=1;
   if(med==1){
       if(!codigo) error_codigo(); 
-      if(!nombre) error_nombre(); 
+      if(!nombre) error_nombre();
+      if(!tipo) error_tipo(); 
       if(!comprueba(estatus)) error_estatus(); 
   }
   else {
@@ -49,7 +83,8 @@ function guardar() {
             data: {
               codigo:codigo, 
               nombre:nombre, 
-              estatus:estatus   
+              estatus:estatus,
+              tipo:tipo   
             },
           success: function(respuesta) {
             $('#container').html((respuesta));
@@ -115,6 +150,17 @@ function comprueba(obj){
     }  
   });    
   }
+  function error_tipo() {
+  $.ajax({
+    url:  base_url + '/Dosimetros/error_tipo',
+    type: 'POST',
+    async: true,
+    data: {  },
+    success: function(respuesta) {
+      $('#cont_tipo').html((respuesta));
+    }  
+  });    
+  }  
 
 
 

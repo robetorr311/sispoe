@@ -48,8 +48,8 @@
                         <td><?php echo $row->estatus; ?></td>
                 <td>
                   <?php if($row->hestatus!=8){ ?>
-                  <a type="button" href="<?php echo base_url(); ?>index.php/Asignar/acta?id=<?php echo $row->id; ?>" target="blank" class="btn btn-block btn-warning btn-xs">Acta de Entrega</a>
-                  <a type="button" href="<?php echo base_url(); ?>index.php/Asignar/constancia?id=<?php echo $row->id; ?>" target="blank" class="btn btn-block btn-warning btn-xs">Constancia de Entrega</a> 
+                  <a type="button" href="<?php echo base_url(); ?>index.php/Dosimetros/acta?id=<?php echo $row->id; ?>" target="blank" class="btn btn-block btn-warning btn-xs">Acta de Entrega</a>
+                  <a type="button" href="<?php echo base_url(); ?>index.php/Dosimetros/constancia?id=<?php echo $row->id; ?>" target="blank" class="btn btn-block btn-warning btn-xs">Constancia de Entrega</a> 
                 <?php } ?>
                   <a type="button" onclick="fdosimetro(<?php echo $row->id; ?>);" class="btn btn-block btn-warning btn-xs">Ver Dosimetros</a> 
 
@@ -82,6 +82,7 @@
                   </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-warning btn-xs" id="select_all"> Seleccionar todos</a>
+                  <button type="button" class="btn btn-warning btn-xs" id="deselect_all">Quitar Seleccionar a todos</a>
                   <button type="button" class="btn btn-warning btn-xs" id="anular_selected"> Anular seleccionados</a>
                   <button type="button" class="btn btn-warning"  data-dismiss="modal" >Cerrar</button>
                 </div>              
@@ -108,6 +109,14 @@ $(document).ready(function(){
           var checkbox=$(this).find(".check_box");
           var id=checkbox.attr("data-id");
           checkbox.prop("checked",true);
+          checkbox.trigger("change");
+        });
+    });
+    $("#deselect_all").on('click',function(){
+        $('.dosimetropersona').each(function(){
+          var checkbox=$(this).find(".check_box");
+          var id=checkbox.attr("data-id");
+          checkbox.prop("checked",false);
           checkbox.trigger("change");
         });
     });

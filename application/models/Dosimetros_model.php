@@ -112,13 +112,6 @@ class Dosimetros_model extends CI_Model {
             }
         return $salida;              
     }
-    public function registro_doc($id)
-    {
-        if (empty($salida)) { $salida=""; }        
-        $query = $this->db->query("select * from sys_poe.vactas where id=$id order  by id;");
-        $salida=$query->result();
-        return $salida;         
-    } 
     public function vdosimetros($id)
     {
         if (empty($salida)) { $salida=""; } 
@@ -164,4 +157,12 @@ class Dosimetros_model extends CI_Model {
         $query = $this->db->query("select * from sys_poe.anular_dosimetros($id);");   
         $salida=$query->result();      
     }
+    public function registro_doc($id)
+    {
+        if (empty($salida)) { $salida=""; }        
+        $query = $this->db->query("select * from sys_poe.vdocumentos where id=$id order  by id;");
+        $salida=$query->result();
+        return $salida;         
+    }
+     
 }

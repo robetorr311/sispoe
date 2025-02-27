@@ -1,4 +1,5 @@
 function guardar_antecedentes() {
+
       var idpersonala=$('#idpersonala').val();
       var fuma=$('#fuma').val();
       var cuantos=$('#cuantos').val();
@@ -9,19 +10,19 @@ function guardar_antecedentes() {
       var laborales=$('#laborales').val();
       var cronicas=$('#cronicas').val();
       var organo=$('#organo').val(); 
-      var hemorragias='';
-      var manchas='';
-      var cansancio='';
-      var nauseas='';
-      var cabello='';
-      var cataratas='';
-      var pielroja='';
-      var esterilidad='';
-      var cambios='';
-      var snfuma='';
-      var sncuantos='';
-      var sncancer='';
-      var sndosimetro='';
+      var hemorragias='NO';
+      var manchas='NO';
+      var cansancio='NO';
+      var nauseas='NO';
+      var cabello='NO';
+      var cataratas='NO';
+      var pielroja='NO';
+      var esterilidad='NO';
+      var cambios='NO';
+      var snfuma='NO';
+      var sncuantos='0';
+      var sncancer='NO';
+      var sndosimetro='NO';
         if ($("#fumasi").is(':checked')){
             snfuma='SI';
         }
@@ -103,15 +104,13 @@ function guardar_antecedentes() {
       if(!sncuantos) med=1;
       if(!sncancer) med=1;
       if(!sndosimetro) med=1;
-      if(!laborales) med=1;
-      if(!cronicas) med=1;
+      if(!cronicas) cronicas='SIN INFORMACION';
+      if(!laborales) laborales='SIN INFORMACION';      
       if(med==1){
           if(!snfuma) error_fuma(); 
           if(!sncuantos) error_cuantos(); 
           if(!sncancer) error_cancer(); 
           if(!sndosimetro) error_dosimetro(); 
-          if(!laborales) error_laborales(); 
-          if(!cronicas) error_cronicas();       
       }
       else {
             //$("#antecedentes").modal("hide");

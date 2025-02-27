@@ -115,7 +115,7 @@ function generar() {
   }
   else {
 
-      controldosim(id,estudio,fechai,fechaf, function(resultado){ 
+      controldosim(id,estudio,fechai,fechaf,servicio, function(resultado){ 
         r = resultado;
         if(resultado>0){
           error_validado();
@@ -142,6 +142,7 @@ function generar() {
       });
  }
 }
+
 function generarxestado() {
   var med=0;
   var estado=$('#estados').val();  
@@ -527,12 +528,12 @@ function vRangodeFechas() {
   }
 }
 }
-function controldosim(id,tipo,fechai,fechaf, callback) {
+function controldosim(id,tipo,fechai,fechaf,servicio, callback) {
   $.ajax({
-    url:  base_url + '/Generar/validardosim',
+    url:  base_url + '/Generar/validardosimxserv',
     type: 'POST',
     async: true,
-    data: { id:id, tipo:tipo,fechai:fechai,fechaf:fechaf  },
+    data: { id:id, tipo:tipo,fechai:fechai,fechaf:fechaf, servicio: servicio  },
     success: function(respuesta) {
       var resp=respuesta;
       if(resp=='NULL'){
