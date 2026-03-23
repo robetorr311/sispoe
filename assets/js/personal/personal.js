@@ -527,3 +527,16 @@ function verificarcodigo() {
     }
   });    
   }
+  function eliminar(id) {
+  if(confirm('Por favor confirma la eliminacion de esta persona')) {
+    $.ajax({
+      url:  base_url + '/Personal/eliminar',
+      type: 'POST',
+      async: true,
+      data: { id:id },
+      success: function(respuesta) {
+        location.reload();
+      }
+    });  
+  }
+}

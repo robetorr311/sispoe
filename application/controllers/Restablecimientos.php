@@ -144,6 +144,7 @@ class Restablecimientos extends MY_Controller {
 						$y=$this->pdf->GetY();
 						$this->pdf->Line($x, $y, $x + 200, $y);
 						$this->pdf->SetFont('Arial','B',10);
+						$this->pdf->SetHeight(6);
 						$this->pdf->SetWidths(array(25,40,70,20,30,30,40,40));			
 			    		$this->pdf->Row(array('Codigo','Nombre','Direccion','Director','Telefono','Estado','Municipio','Parroquia'));			
 
@@ -186,6 +187,7 @@ class Restablecimientos extends MY_Controller {
 					$y=$this->pdf->GetY();
 					$this->pdf->Line($x, $y, $x + 200, $y);
 					$this->pdf->SetFont('Arial','B',10);
+					$this->pdf->SetHeight(6);
 					$this->pdf->SetWidths(array(25,40,70,20,30,30,40,40));			
 		    		$this->pdf->Row(array('Codigo','Nombre','Direccion','Director','Telefono','Estado','Municipio','Parroquia'));			
 
@@ -245,6 +247,7 @@ class Restablecimientos extends MY_Controller {
 						$y=$this->pdf->GetY();
 						$this->pdf->Line($x, $y, $x + 200, $y);
 						$this->pdf->SetFont('Arial','B',10);
+						$this->pdf->SetHeight(6);
 						$this->pdf->SetWidths(array(25,40,70,20,30,30,40,40));			
 			    		$this->pdf->Row(array('Codigo','Nombre','Direccion','Director','Telefono','Estado','Municipio','Parroquia'));			
 
@@ -287,6 +290,7 @@ class Restablecimientos extends MY_Controller {
 					$y=$this->pdf->GetY();
 					$this->pdf->Line($x, $y, $x + 200, $y);
 					$this->pdf->SetFont('Arial','B',10);
+					$this->pdf->SetHeight(6);
 					$this->pdf->SetWidths(array(25,40,70,20,30,30,40,40));			
 		    		$this->pdf->Row(array('Codigo','Nombre','Direccion','Director','Telefono','Estado','Municipio','Parroquia'));			
 
@@ -347,6 +351,7 @@ class Restablecimientos extends MY_Controller {
 						$y=$this->pdf->GetY();
 						$this->pdf->Line($x, $y, $x + 200, $y);
 						$this->pdf->SetFont('Arial','B',10);
+						$this->pdf->SetHeight(6);
 						$this->pdf->SetWidths(array(25,40,20,20,40,40,70,40));			
 			    		$this->pdf->Row(array('Codigo','Nombre','Cedula','Sexo','Cargo','Servicio','Direccion','Telefono'));			
 
@@ -390,6 +395,7 @@ class Restablecimientos extends MY_Controller {
 					$y=$this->pdf->GetY();
 					$this->pdf->Line($x, $y, $x + 200, $y);
 					$this->pdf->SetFont('Arial','B',10);
+					$this->pdf->SetHeight(6);
 					$this->pdf->SetWidths(array(25,40,20,20,40,40,70,40));			
 			    	$this->pdf->Row(array('Codigo','Nombre','Cedula','Sexo','Cargo','Servicio','Direccion','Telefono'));			
 

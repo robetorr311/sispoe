@@ -5,13 +5,23 @@ class PDF_MC_Table extends FPDF
 {
 var $widths;
 var $aligns;
-
+var $height;
+var $fontsmc;
 function SetWidths($w)
 {
 	//Set the array of column widths
 	$this->widths=$w;
 }
-
+function SetFontsMC($f)
+{
+    //Set the array of column widths
+    $this->fontsmc=$f;
+}
+function SetHeight($h)
+{
+    //Set the array of column widths
+    $this->height=$h;
+}
 function SetAligns($a)
 {
 	//Set the array of column alignments
@@ -24,7 +34,7 @@ function Row($data, $draw_border = false)
 	$nb=0;
 	for($i=0;$i<count($data);$i++)
 		$nb=max($nb,$this->NbLines($this->widths[$i],$data[$i]));
-	$h=5*$nb;
+	$h=$this->height*$nb;
 	//Issue a page break first if needed
 	$this->CheckPageBreak($h);
 	//Draw the cells of the row
@@ -41,7 +51,10 @@ function Row($data, $draw_border = false)
 		{
 			$this->Rect($x,$y,$w,$h);
 		}
-
+        $this->SetFont('Arial','',10);
+        if($this->fontsmc[$i]=='B'){
+           $this->SetFont('Arial','B',10);
+        }
 		//Print the text
 		$this->MultiCell($w,5,$data[$i],0,$a);
 		//Put the position to the right of the cell

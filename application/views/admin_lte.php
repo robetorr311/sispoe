@@ -41,7 +41,7 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                    <div class="pull-right"><img src="<?php echo base_url(); ?>assets/img/lndpe.png" /></div>
+                    <div class="pull-right"><img src="<?php echo base_url(); ?>assets/img/lndpe.png" width="60px" heigth="60px"  /></div>
                     </ul>
                 </div>
             </div>    

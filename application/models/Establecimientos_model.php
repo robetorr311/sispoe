@@ -39,7 +39,19 @@ class Establecimientos_model extends CI_Model {
                 $salida=$row->estado;
         }        
         return $salida;              
-    }           
+    }
+    public function get_direccion($id)
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select direccion from sys_poe.vestablecimientos where id=$id;");   
+        $salida=$query->result();
+        foreach ($query->result() as $row)
+        {
+                $salida=$row->direccion;
+        }        
+        return $salida;              
+    }  
     public function nombreserv($id)
     {
         if (empty($salida)) { $salida=""; } 
@@ -180,5 +192,24 @@ class Establecimientos_model extends CI_Model {
         $this->db->where('idpractica', $id);
         $this->db->delete('sys_tmp.tmp_pract'.$codigo); 
     }     
-
+    public function eliminar_establecimiento($id){
+        $this->db->where('id', $id);
+        $this->db->delete('sys_poe.establecimientos'); 
+    } 
+    public function eliminar_personalestablecimiento($id){
+        $this->db->where('idestablecimiento', $id);
+        $this->db->delete('sys_poe.personalestablecimiento');
+    }
+    public function eliminar_serviciosestablecimiento($id){
+        $this->db->where('idestablecimiento', $id);
+        $this->db->delete('sys_poe.serviciosestablecimiento');
+    }
+    public function eliminar_practicapersonal($id){
+        $this->db->where('idestablecimiento', $id);
+        $this->db->delete('sys_poe.practicapersonal');
+    }
+    public function eliminar_personalservicios($id){
+        $this->db->where('idestablecimiento', $id);
+        $this->db->delete('sys_poe.personalservicios');
+    }
 }

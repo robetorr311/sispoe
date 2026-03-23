@@ -387,7 +387,14 @@ $.datepicker.regional['es'] = {
                 echo $fecha;
                 ?></td>
 
-                <td><button class="btn btn-block <?php echo $color; ?> btn-xs" onclick="registro('<?php echo $row->codigo; ?>');">Ver Registro</button></td>
+                <td>
+                <button class="btn btn-block <?php echo $color; ?> btn-xs" onclick="registro('<?php echo $row->codigo; ?>');">Ver Registro</button>
+                  <?php
+                  if($idusuario==1){
+                     echo "<button class=\"btn btn-block ".$color." btn-xs\" onclick=\"eliminar('".$row->codigo."');\">Eliminar</button>";
+                  }
+                  ?>
+                </td>
             </tr>
           <?php endforeach; ?>
         </tbody>

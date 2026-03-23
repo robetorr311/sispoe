@@ -101,15 +101,14 @@ class Reportedosis extends MY_Controller {
     }				
     public function generar(){
     	$ff=time();
-    	$dd = strftime("%d",$ff);
-		$mes=strftime("%m",$ff);
-    	$anio=strftime("%Y",$ff);
+    	$dd = date("%d",$ff);
+		$mes=date("%m",$ff);
+    	$anio=date("%Y",$ff);
     	$fecha=$dd.'-'.$mes.'-'.$anio;
     	$yy=0;
 		$xx=0;
 		$x=5;
 		$y=5;
-
 		$this->load->model('Establecimientos_model');
 		$this->load->model('Ubicacion_model');
 		$this->load->model('Reportedosis_model');
@@ -133,6 +132,7 @@ class Reportedosis extends MY_Controller {
 		$estado=$this->Ubicacion_model->estado($idestado);
 		$servicio=$this->Servicios_model->nombreserv($idservicio);
 		$establecimiento=$this->Establecimientos_model->get_nombre($idestablecimiento);
+		$direccionestablecimiento=$this->Establecimientos_model->get_direccion($idestablecimiento);
 		$estudio=$this->Reportedosis_model->get_estudio($idestudio);
 		$datosreporte=$this->Reportedosis_model->freportedosis($idestablecimiento,$idservicio,$idestudio,$fechai,$fechaf);
 		$k=0;
@@ -145,13 +145,43 @@ class Reportedosis extends MY_Controller {
         }
         else {
         	$p=$k/10;
-			$paginas=round($p, 0);
+			$paginas=round($p, 1);
 		}
 		$dj=time();
-		$dd=strftime("%d",$dj);
-		$mes=strftime("%M",$dj);
-		$anio=strftime("%Y",$dj);     
+		$dd=date("d",$dj);
+		$mes=date("M",$dj);
+		$anio=date("Y",$dj);     
 	   	$fechadeemision=$dd.'/'.$mes.'/'.$anio;
+		/*$establecimiento=mb_convert_encoding($establecimiento,'ISO-8859-1', 'UTF-8');
+        $direccionestablecimiento=mb_convert_encoding($direccionestablecimiento,'ISO-8859-1', 'UTF-8');
+        $servicio=mb_convert_encoding($servicio,'ISO-8859-1', 'UTF-8');
+        $estudio=mb_convert_encoding($estudio,'ISO-8859-1', 'UTF-8');
+        $codigo_obs=mb_convert_encoding('Código de las observaciones:','ISO-8859-1', 'UTF-8').phpversion();
+        $metodo=mb_convert_encoding('Método de ensayo basado en ICRU Report 47 (1992)','ISO-8859-1', 'UTF-8');
+        $leyenda=mb_convert_encoding('DD: Dosímetro Dañado. NU: Dosímetro no utilizado NR: Dosimetro no Recepcionado DP: Dosímetro Perdido <LD: Dosis menor al límite inferior de detección','ISO-8859-1', 'UTF-8');
+        $aprobado_por=mb_convert_encoding('Aprobado por: Gloria Escobar','ISO-8859-1', 'UTF-8');
+        $fecha_d_emision=mb_convert_encoding('Fecha de Emisión: '.$fechadeemision,'ISO-8859-1', 'UTF-8' );
+        $se_prohibe=mb_convert_encoding('Se prohibe la reproducción total o parcial de este certificado sin la aprobación del Laboratorio que lo emite.','ISO-8859-1', 'UTF-8');
+        $nota=mb_convert_encoding('NOTA: Este reporte de Dosis incluye solo los dosímetros devueltos por el establecimiento según la fecha de recepción','ISO-8859-1', 'UTF-8');
+        $direccion_postal=mb_convert_encoding('Dirección postal:','ISO-8859-1', 'UTF-8');
+        $direccion_general=mb_convert_encoding('Dirección Genearal de Salud Ambiental, Galpón 10 Las Delicias Maracay - Venezuela','ISO-8859-1', 'UTF-8');
+        $telef=mb_convert_encoding('Telef: 0243-2428707 Fax: 0243-2428707','ISO-8859-1', 'UTF-8');*/
+
+		$establecimiento=utf8_decode($establecimiento);
+        $direccionestablecimiento=utf8_decode($direccionestablecimiento);
+        $servicio=utf8_decode($servicio);
+        $estudio=utf8_decode($estudio);
+        $codigo_obs=utf8_decode('Código de las observaciones: ');
+        $metodo=utf8_decode('Método de ensayo basado en ICRU Report 47 (1992)');
+        $leyenda=utf8_decode('DD: Dosímetro Dañado. NU: Dosímetro no utilizado NR: Dosimetro no Recepcionado DP: Dosímetro Perdido <LD: Dosis menor al límite inferior de detección');
+        $aprobado_por=utf8_decode('Aprobado por: Edward Martinez');
+        $fecha_d_emision=utf8_decode('Fecha de Emisión:').$fechadeemision;
+        $se_prohibe=utf8_decode('Se prohibe la reproducción total o parcial de este certificado sin la aprobación del Laboratorio que lo emite.');
+        $nota=utf8_decode('NOTA: Este reporte de Dosis incluye solo los dosímetros devueltos por el establecimiento según la fecha de recepción');
+        $direccion_postal=utf8_decode('Dirección postal:');
+        $direccion_general=utf8_decode('Dirección Genearal de Salud Ambiental, Galpón 10 Las Delicias Maracay - Venezuela');
+        $telef=utf8_decode('Telef: 0243-2428707 Fax: 0243-2428707');
+
 	   	$this->load->library('pdf');		
 		$id=$this->input->get('id');
 		$this->pdf=new PDF_MC_Table();
@@ -166,44 +196,37 @@ class Reportedosis extends MY_Controller {
 		$y=$y-5;
 		$this->pdf->SetY($y);		
 		$this->pdf->SetFont('Arial','',8);
-		$this->pdf->Cell(200,10,'Certificado No.:399-457-2-10-22-2-2017',0,1,'C');
+		$this->pdf->Cell(200,10,'Certificado No.:399-'.$idestablecimiento.'-'.$idestudio.'-'.$idservicio.'-'.str_replace('/', '-', $fechaf),0,1,'C');
 		$y=$this->pdf->GetY();
 		$y=$y-5;
 		$this->pdf->SetY($y);						
 		$this->pdf->SetFont('Arial','B',12);
 		$this->pdf->Cell(200,10,'Reporte de Dosis Equivalente Personal HP(10)',0,1,'C');
 		$y=$this->pdf->GetY();
-		$y=$y-4;
 		$this->pdf->SetY($y);
 		$this->pdf->SetX($x);		
 		$this->pdf->SetFont('Arial','B',10);
-		$this->pdf->Cell(25,10,'Institucion:',0,0,'L');
-		$this->pdf->SetFont('Arial','',10);		
-		$this->pdf->Cell(100,10,$establecimiento.' ('.$idestablecimiento.')',0,0,'L');
-		$this->pdf->SetFont('Arial','B',10);
-		$this->pdf->Cell(25,10,'Estado:',0,0,'L');					
-		$this->pdf->SetFont('Arial','',10);		
-		$this->pdf->Cell(50,10,$estado,0,1,'L');
-		$y=$this->pdf->GetY();
-		$y=$y-4;
-		$this->pdf->SetY($y);
-		$this->pdf->SetX($x);		
-		$this->pdf->SetFont('Arial','B',10);
-		$this->pdf->Cell(25,10,'Direccion:',0,0,'L');
-		$this->pdf->SetFont('Arial','',10);		
-		$this->pdf->Cell(100,10,'',0,0,'L');
-		$this->pdf->SetFont('Arial','B',10);
-		$this->pdf->Cell(25,10,'Fecha de Evaluacion:',0,0,'L');		
-		$this->pdf->SetFont('Arial','',10);		
-		$this->pdf->Cell(50,10,'',0,1,'L');							
-		$y=$this->pdf->GetY();
-		$y=$y-4;
+	    $this->pdf->SetFontsMC(array('B','','B',''));
+	    $this->pdf->SetWidths(array(25,100,25,50));
+	    $this->pdf->SetHeight(5);
+		$this->pdf->SetX($x);	
+		$this->pdf->Row(array('Institucion:',$establecimiento.' ('.$idestablecimiento.')','Estado:',$estado));
+	    $this->pdf->SetFontsMC(array('B','','B',''));
+	    $this->pdf->SetX($x);
+	    $this->pdf->SetWidths(array(25,100,45,30));
+		$this->pdf->Row(array('Direccion:',$direccionestablecimiento,'Fecha de Evaluacion:',''));
+		if(strlen($establecimiento)>45){
+			$y=$y+10;
+		}
+		if(strlen($direccionestablecimiento)>45){
+			$y=$y+10;
+		}
 		$this->pdf->SetY($y);
 		$this->pdf->SetX($x);		
 		$this->pdf->SetFont('Arial','B',10);
 		$this->pdf->Cell(25,10,'Servicio:',0,0,'L');
 		$this->pdf->SetFont('Arial','',10);		
-		$this->pdf->Cell(100,10,utf8_decode($servicio),0,0,'L');
+		$this->pdf->Cell(100,10,$servicio,0,0,'L');
 		$this->pdf->SetFont('Arial','B',10);
 		$this->pdf->Cell(25,10,'Incertidumbre:',0,0,'L');		
 		$this->pdf->SetFont('Arial','',10);		
@@ -215,7 +238,7 @@ class Reportedosis extends MY_Controller {
 		$this->pdf->SetFont('Arial','B',10);
 		$this->pdf->Cell(40,10,'Control Dosimetrico:',0,0,'L');
 		$this->pdf->SetFont('Arial','',10);		
-		$this->pdf->Cell(100,10,utf8_decode($estudio),0,1,'L');		
+		$this->pdf->Cell(100,10,$estudio,0,1,'L');		
 		$y=$this->pdf->GetY();
 		$y=$y-4;
 		$this->pdf->SetY($y);
@@ -235,72 +258,80 @@ class Reportedosis extends MY_Controller {
 		$y=$this->pdf->GetY();
 		$this->pdf->Line($x, $y, $x + 200, $y);
 		$this->pdf->SetFont('Arial','B',10);
-		$this->pdf->Cell(10,10,'No',0,0,'L');
-		$this->pdf->Cell(40,10,'Codigo',0,0,'L');
-		$this->pdf->Cell(70,10,'Nombres y Apellidos',0,0,'L');
-		$this->pdf->Cell(40,10,'Dosis (mSv)',0,0,'L');
-		$this->pdf->Cell(40,10,'Dosis Anual (*)',0,1,'L');
 		$this->pdf->Line($x, $y, $x + 200, $y);
     	$y=$this->pdf->GetY();
-    	$this->pdf->Line($x, $y, $x + 200, $y);	
-    	$nro=0;		
+	    $this->pdf->Line($x, $y+7, $x + 200, $y+7);
+    	$nro=0;	
+    	$this->pdf->SetFontsMC(array('','','','',''));
+    	$this->pdf->SetWidths(array(10,30,80,40,40));
+    	$this->pdf->SetHeight(8);
+		$this->pdf->Row(array('No','Codigo','Nombres y Apellidos','Dosis (mSv)','Dosis Anual (*)'));	
 		foreach ($datosreporte as $row2):           
 			$nro++;
 			$idpersona=$row2->nidpersona; 
 			$personal=$row2->nnombre;
 			$dosis=$row2->ndosis; 
 			$acum=$row2->nacumulada;
-		$this->pdf->SetFont('Arial','',10);
-		$this->pdf->Cell(10,10,$nro,0,0,'L');
-		$this->pdf->Cell(40,10,$idpersona,0,0,'L');
-		$this->pdf->Cell(70,10,$personal,0,0,'L');
-		$this->pdf->Cell(40,10,$dosis,0,0,'L');
-		$this->pdf->Cell(40,10,$acum,0,1,'L');	 
+            if($idpersona==0){
+		        $this->pdf->SetFont('Arial','',10);
+                $this->pdf->Row(array($nro,$idpersona,'TESTIGO',$dosis,'-'));
+		    }
+		    else{
+		        $this->pdf->SetFont('Arial','',10);
+		        //$this->pdf->Row(array($nro,$idpersona,mb_convert_encoding($personal,'ISO-8859-1', 'UTF-8'),$dosis,$acum));
+		        $this->pdf->Row(array($nro,$idpersona,utf8_decode($personal),$dosis,$acum));
+		    }
         endforeach;
 		$y=$this->pdf->GetY();
 		$this->pdf->Line($x, $y, $x + 200, $y);
 		$this->pdf->SetFont('Arial','',8);		
-		$this->pdf->Cell(100,10,utf8_decode('Código de las observaciones:'),0,0,'L');
-		$this->pdf->Cell(100,10,utf8_decode('Método de ensayo basado en ICRU Report 47 (1992)'),0,1,'L');
+		$this->pdf->Cell(100,10,$codigo_obs,0,0,'L');
+		$this->pdf->Cell(100,10,$metodo,0,1,'L');
 		$y=$this->pdf->GetY();
 		$y=$y-4;
 		$this->pdf->SetY($y);
 		$this->pdf->SetX($x);			
-		$this->pdf->Cell(100,10,utf8_decode('DD: Dosímetro Dañado. NU: Dosímetro no utilizado NR: Dosimetro no Recepcionado DP: Dosímetro Perdido <LD: Dosis menor al límite inferior de detección'),0,1,'L');
+		$this->pdf->Cell(100,10,$leyenda,0,1,'L');
 		$y=$this->pdf->GetY();
 		$this->pdf->Line($x, $y, $x + 200, $y);							
-		$this->pdf->Cell(60,10,utf8_decode('Aprobado por: Edwars Martinez'),0,0,'L');
-		$this->pdf->Cell(40,10,utf8_decode('Firma:'),0,0,'L');
-		$this->pdf->Cell(40,10,utf8_decode('Cargo: Jefe de Servicio'),0,0,'L');
-		$this->pdf->Cell(40,10,utf8_decode('Fecha de Emisión: '.$fechadeemision ),0,1,'L');
+		$this->pdf->Cell(60,10,$aprobado_por,0,0,'L');
+		$this->pdf->Cell(40,10,'Firma:',0,0,'L');
+		$this->pdf->Cell(40,10,'Cargo: Jefe de Servicio',0,0,'L');
+		$this->pdf->Cell(40,10,$fecha_d_emision,0,1,'L');
 		$y=$this->pdf->GetY();
 		$this->pdf->Line($x, $y, $x + 200, $y);	
 		$this->pdf->SetFont('Arial','B',8);
-		$this->pdf->Cell(100,10,utf8_decode('Se prohibe la reproducción total o parcial de este certificado sin la aprobación del Laboratorio que lo emite.'),0,1,'L');
+		$this->pdf->Cell(100,10,$se_prohibe,0,1,'L');
+		$old_x=$x;
+		$old_y=$y;
+		$this->pdf->SetY($y);
+		$this->pdf->SetX($x);								
+		//$this->pdf->Image('./assets/img/sello.png',$x+70,$y+15,50,50);
+		//$this->pdf->Image('./assets/img/firma.png',$x+60,$y+15,80,50);
 		$y=$this->pdf->GetY();
 		$y=$y-4;
 		$this->pdf->SetY($y);
 		$this->pdf->SetX($x);
 		$this->pdf->SetFont('Arial','',8);		
-		$this->pdf->Cell(100,10,utf8_decode('NOTA: Este reporte de Dosis incluye solo los dosómetros devueltos por el establecimiento según la fecha de recepción'),0,1,'L');
+		$this->pdf->Cell(100,10,$nota,0,1,'L');
 		$y=$this->pdf->GetY();
 		$y=$y-4;
 		$this->pdf->SetY($y);
 		$this->pdf->SetX($x);
 		$this->pdf->SetFont('Arial','B',8);		
-		$this->pdf->Cell(100,10,utf8_decode('Dirección postal:'),0,1,'L');
+		$this->pdf->Cell(100,10,$direccion_postal,0,1,'L');
 		$y=$this->pdf->GetY();
 		$y=$y-4;
 		$this->pdf->SetY($y);
 		$this->pdf->SetX($x);
 		$this->pdf->SetFont('Arial','',8);		
-		$this->pdf->Cell(100,10,utf8_decode('Dirección Genearal de Salud Ambiental, Galpón 10 Las Delicias Maracay - Venezuela'),0,1,'L');
+		$this->pdf->Cell(100,10,$direccion_general,0,1,'L');
 		$y=$this->pdf->GetY();
 		$y=$y-4;
 		$this->pdf->SetY($y);
 		$this->pdf->SetX($x);
 		$this->pdf->SetFont('Arial','B',8);		
-		$this->pdf->Cell(100,10,utf8_decode('Telef: 0243-2428707 Fax: 0243-2428707'),0,1,'L');
+		$this->pdf->Cell(100,10,$telef,0,1,'L');
 		}
 		else {			
 		$n=0;
@@ -323,44 +354,31 @@ class Reportedosis extends MY_Controller {
 			$y=$y-5;
 			$this->pdf->SetY($y);		
 			$this->pdf->SetFont('Arial','',8);
-			$this->pdf->Cell(200,10,'Certificado No.:399-457-2-10-22-2-2017',0,1,'C');
+            $this->pdf->Cell(200,10,'Certificado No.:399-'.$idestablecimiento.'-'.$idestudio.'-'.$idservicio.'-'.str_replace('/', '-', $fechaf),0,1,'C');
 			$y=$this->pdf->GetY();
 			$y=$y-5;
 			$this->pdf->SetY($y);						
 			$this->pdf->SetFont('Arial','B',12);
 			$this->pdf->Cell(200,10,'Reporte de Dosis Equivalente Personal HP(10)',0,1,'C');
 			$y=$this->pdf->GetY();
-			$y=$y-4;
 			$this->pdf->SetY($y);
 			$this->pdf->SetX($x);		
 			$this->pdf->SetFont('Arial','B',10);
-			$this->pdf->Cell(25,10,'Institucion:',0,0,'L');
-			$this->pdf->SetFont('Arial','',10);		
-			$this->pdf->Cell(100,10,$establecimiento.' ('.$idestablecimiento.')',0,0,'L');
-			$this->pdf->SetFont('Arial','B',10);
-			$this->pdf->Cell(25,10,'Estado:',0,0,'L');					
-			$this->pdf->SetFont('Arial','',10);		
-			$this->pdf->Cell(50,10,$estado,0,1,'L');
+	        $this->pdf->SetFontsMC(array('B','','B',''));
+	        $this->pdf->SetWidths(array(25,100,25,50));
+	        $this->pdf->SetHeight(5);
+		    $this->pdf->Row(array('Institucion:',$establecimiento.' ('.$idestablecimiento.')','Estado:',$estado));
+		    $this->pdf->SetX($x);
+	        $this->pdf->SetFontsMC(array('B','','B',''));
+	        $this->pdf->SetWidths(array(25,100,45,30));
+		    $this->pdf->Row(array('Direccion:',$direccionestablecimiento,'Fecha de Evaluacion:',''));
 			$y=$this->pdf->GetY();
-			$y=$y-4;
-			$this->pdf->SetY($y);
-			$this->pdf->SetX($x);		
-			$this->pdf->SetFont('Arial','B',10);
-			$this->pdf->Cell(25,10,'Direccion:',0,0,'L');
-			$this->pdf->SetFont('Arial','',10);		
-			$this->pdf->Cell(100,10,'',0,0,'L');
-			$this->pdf->SetFont('Arial','B',10);
-			$this->pdf->Cell(25,10,'Fecha de Evaluacion:',0,0,'L');		
-			$this->pdf->SetFont('Arial','',10);		
-			$this->pdf->Cell(50,10,'',0,1,'L');							
-			$y=$this->pdf->GetY();
-			$y=$y-4;
 			$this->pdf->SetY($y);
 			$this->pdf->SetX($x);		
 			$this->pdf->SetFont('Arial','B',10);
 			$this->pdf->Cell(25,10,'Servicio:',0,0,'L');
 			$this->pdf->SetFont('Arial','',10);		
-			$this->pdf->Cell(100,10,utf8_decode($servicio),0,0,'L');
+			$this->pdf->Cell(100,10,$servicio,0,0,'L');
 			$this->pdf->SetFont('Arial','B',10);
 			$this->pdf->Cell(25,10,'Incertidumbre:',0,0,'L');		
 			$this->pdf->SetFont('Arial','',10);		
@@ -372,7 +390,7 @@ class Reportedosis extends MY_Controller {
 			$this->pdf->SetFont('Arial','B',10);
 			$this->pdf->Cell(40,10,'Control Dosimetrico:',0,0,'L');
 			$this->pdf->SetFont('Arial','',10);		
-			$this->pdf->Cell(100,10,utf8_decode($estudio),0,1,'L');		
+			$this->pdf->Cell(100,10,$estudio,0,1,'L');		
 			$y=$this->pdf->GetY();
 			$y=$y-4;
 			$this->pdf->SetY($y);
@@ -393,71 +411,78 @@ class Reportedosis extends MY_Controller {
 			$y=$this->pdf->GetY();
 			$this->pdf->Line($x, $y, $x + 200, $y);
 			$this->pdf->SetFont('Arial','B',10);
-			$this->pdf->Cell(10,10,'No',0,0,'L');
-			$this->pdf->Cell(40,10,'Codigo',0,0,'L');
-			$this->pdf->Cell(70,10,'Nombres y Apellidos',0,0,'L');
-			$this->pdf->Cell(40,10,'Dosis (mSv)',0,0,'L');
-			$this->pdf->Cell(40,10,'Dosis Anual (*)',0,1,'L');
 			$this->pdf->Line($x, $y, $x + 200, $y);
 	    	$y=$this->pdf->GetY();
-	    	$this->pdf->Line($x, $y, $x + 200, $y);	
-			foreach ($datosreporte_p as $row2):           
-				$nro++;
-				$idpersona=$row2->nidpersona; 
-				$personal=$row2->nnombre;
-				$dosis=$row2->ndosis; 
-				$acum=$row2->nacumulada;
-			$this->pdf->SetFont('Arial','',10);
-			$this->pdf->Cell(10,10,$nro,0,0,'L');
-			$this->pdf->Cell(40,10,$idpersona,0,0,'L');
-			$this->pdf->Cell(70,10,$personal,0,0,'L');
-			$this->pdf->Cell(40,10,$dosis,0,0,'L');
-			$this->pdf->Cell(40,10,$acum,0,1,'L');	 
+	    	$this->pdf->Line($x, $y+7, $x + 200, $y+7);	
+	    	$this->pdf->SetFontsMC(array('','','','',''));
+	    	$this->pdf->SetWidths(array(10,30,80,40,40));
+	    	$this->pdf->SetHeight(8);
+		    $this->pdf->Row(array('No','Codigo','Nombres y Apellidos','Dosis (mSv)','Dosis Anual (*)'));
+			foreach ($datosreporte_p as $row2): 
+                $nro++;
+                $idpersona=$row2->nidpersona; 
+                $personal=$row2->nnombre;
+                $dosis=$row2->ndosis; 
+                $acum=$row2->nacumulada;
+                if($idpersona==0){
+                	$this->pdf->Row(array($nro,$idpersona,'TESTIGO',$dosis,'-'));
+                }
+                else{
+                    $this->pdf->SetFont('Arial','',10);
+                    //$this->pdf->Row(array($nro,$idpersona,mb_convert_encoding($personal,'ISO-8859-1', 'UTF-8'),$dosis,$acum));
+                    $this->pdf->Row(array($nro,$idpersona,utf8_decode($personal),$dosis,$acum));
+                }			          
 	        endforeach;
 			$y=$this->pdf->GetY();
 			$this->pdf->Line($x, $y, $x + 200, $y);
 			$this->pdf->SetFont('Arial','',8);		
-			$this->pdf->Cell(100,10,utf8_decode('Código de las observaciones:'),0,0,'L');
-			$this->pdf->Cell(100,10,utf8_decode('Método de ensayo basado en ICRU Report 47 (1992)'),0,1,'L');
+			$this->pdf->Cell(100,10,$codigo_obs,0,0,'L');
+			$this->pdf->Cell(100,10,$metodo,0,1,'L');
 			$y=$this->pdf->GetY();
 			$y=$y-4;
 			$this->pdf->SetY($y);
 			$this->pdf->SetX($x);			
-			$this->pdf->Cell(100,10,utf8_decode('DD: Dosímetro Dañado. NU: Dosímetro no utilizado NR: Dosimetro no Recepcionado DP: Dosímetro Perdido <LD: Dosis menor al límite inferior de detección'),0,1,'L');
+			$this->pdf->Cell(100,10,$leyenda,0,1,'L');
 			$y=$this->pdf->GetY();
 			$this->pdf->Line($x, $y, $x + 200, $y);							
-			$this->pdf->Cell(60,10,utf8_decode('Aprobado por: Edwars Martinez'),0,0,'L');
-			$this->pdf->Cell(40,10,utf8_decode('Firma:'),0,0,'L');
-			$this->pdf->Cell(40,10,utf8_decode('Cargo: Jefe de Servicio'),0,0,'L');
-			$this->pdf->Cell(40,10,utf8_decode('Fecha de Emisión: '.$fechadeemision ),0,1,'L');
+			$this->pdf->Cell(60,10,$aprobado_por,0,0,'L');
+			$this->pdf->Cell(40,10,'Firma:',0,0,'L');
+			$this->pdf->Cell(40,10,'Cargo: Jefe de Servicio',0,0,'L');
+			$this->pdf->Cell(40,10,$fecha_d_emision,0,1,'L');
 			$y=$this->pdf->GetY();
 			$this->pdf->Line($x, $y, $x + 200, $y);	
 			$this->pdf->SetFont('Arial','B',8);
-			$this->pdf->Cell(100,10,utf8_decode('Se prohibe la reproducción total o parcial de este certificado sin la aprobación del Laboratorio que lo emite.'),0,1,'L');
+			$this->pdf->Cell(100,10,$se_prohibe,0,1,'L');
+			$old_x=$x;
+			$old_y=$y;
+			$this->pdf->SetY($y);
+			$this->pdf->SetX($x);								
+			//$this->pdf->Image('./assets/img/sello.png',$x+70,$y+15,50,50);
+		   // $this->pdf->Image('./assets/img/firma.png',$x+60,$y+15,80,50);
 			$y=$this->pdf->GetY();
 			$y=$y-4;
 			$this->pdf->SetY($y);
 			$this->pdf->SetX($x);
 			$this->pdf->SetFont('Arial','',8);		
-			$this->pdf->Cell(100,10,utf8_decode('NOTA: Este reporte de Dosis incluye solo los dosómetros devueltos por el establecimiento según la fecha de recepción'),0,1,'L');
+			$this->pdf->Cell(100,10,$nota,0,1,'L');
 			$y=$this->pdf->GetY();
 			$y=$y-4;
 			$this->pdf->SetY($y);
 			$this->pdf->SetX($x);
 			$this->pdf->SetFont('Arial','B',8);		
-			$this->pdf->Cell(100,10,utf8_decode('Dirección postal:'),0,1,'L');
+			$this->pdf->Cell(100,10,$direccion_postal,0,1,'L');
 			$y=$this->pdf->GetY();
 			$y=$y-4;
 			$this->pdf->SetY($y);
 			$this->pdf->SetX($x);
 			$this->pdf->SetFont('Arial','',8);		
-			$this->pdf->Cell(100,10,utf8_decode('Dirección Genearal de Salud Ambiental, Galpón 10 Las Delicias Maracay - Venezuela'),0,1,'L');
+			$this->pdf->Cell(100,10,$direccion_general,0,1,'L');
 			$y=$this->pdf->GetY();
 			$y=$y-4;
 			$this->pdf->SetY($y);
 			$this->pdf->SetX($x);
 			$this->pdf->SetFont('Arial','B',8);		
-			$this->pdf->Cell(100,10,utf8_decode('Telef: 0243-2428707 Fax: 0243-2428707'),0,1,'L');
+			$this->pdf->Cell(100,10,$telef,0,1,'L');
 			$limite=$limite+10;
 		}	
 		}
@@ -474,6 +499,6 @@ class Reportedosis extends MY_Controller {
 		 $data=$this->Reportedosis_model->ireportedosis( $idreporte ,$idusuario ,$nombre ,$tamanio ,$tipo ,$archivo );  
 		if (file_exists($rutacompleta)) {
 		    unlink($rutacompleta);
-		} 		 	
-    } 		    		
+		}
+    }
 }

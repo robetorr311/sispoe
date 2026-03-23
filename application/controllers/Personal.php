@@ -24,6 +24,7 @@ class Personal extends MY_Controller {
 			$idcontrolador=$this->Controladores_model->get_id('Personal');
 			$this->Sesion_model->actividad($idcontrolador,$idusuario , 1 , 5,$idsesion);		
 			$data['color']=$this->Menu_model->get_color('Personal');
+			$data['idusuario']=$idusuario;
 			$this->add_view('personal/perso_inicial_view',$data);		
 		}		
 	}
@@ -382,6 +383,7 @@ class Personal extends MY_Controller {
 		}						
 		$this->load->model('Menu_model');
 		$data['color']=$this->Menu_model->get_color('Personal');
+		$data['idusuario']=$idusuario;
 		$this->load->view('personal/perso_new_view',$data);				
 	}		
 	public function registro()
@@ -493,6 +495,7 @@ class Personal extends MY_Controller {
 			$data['organo']=$organo; 
 			$data['laboratorio']=$laboratorio; 
 			$data['estatus']=$estatus;
+			$data['idusuario']=$idusuario;
 		$this->load->model('Menu_model');
 		$data['color']=$this->Menu_model->get_color('Personal');
 		$this->load->view('personal/perso_reg_view',$data);				
@@ -626,6 +629,7 @@ class Personal extends MY_Controller {
 			$data['estatus']=$estatus;					
 		$this->load->model('Menu_model');
 		$data['color']=$this->Menu_model->get_color('Personal');
+		$data['idusuario']=$idusuario;
 		$this->load->view('personal/perso_edit_view',$data);							
 	}	
 	public function guardar()
@@ -677,6 +681,7 @@ class Personal extends MY_Controller {
 			$data['activo']=$activo;
 		$this->load->model('Menu_model');
 		$data['color']=$this->Menu_model->get_color('Personal');
+		$data['idusuario']=$idusuario;
 			$this->load->view('personal/perso_guardado_view',$data);
 	}
 	public function chkselect($value)
@@ -861,5 +866,15 @@ class Personal extends MY_Controller {
 		$this->Personal_model->drop_tmp_estab($codigo);
 		$this->Personal_model->drop_tmp_ant($codigo);
 	   	$this->load->view('personal/cancelado');
-	} 	                    	
+	} 
+	public function eliminar()
+	{
+		$this->load->model('Personal_model');
+        $id=$this->input->post('id');
+        $this->Personal_model->eliminar_persona($id);
+        $this->Personal_model->eliminar_personalestablecimiento($id);
+        $this->Personal_model->eliminar_practicapersonal($id);
+        $this->Personal_model->eliminar_personalservicios($id);
+	}
+	
 }	

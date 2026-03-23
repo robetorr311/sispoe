@@ -120,5 +120,11 @@ class Lecturas_model extends CI_Model {
         $salida=$query->result();
         return "select * from sys_poe.ilecturas_new($dosimetro , $idtarjeta , $idpersonal , $dosis );";          
     }
- 
+    public function registro2($iddosimetro)
+    {
+        if (empty($salida)) { $salida=""; }        
+        $query = $this->db->query("select * from sys_poe.dosimetropersona where idtarjeta=$iddosimetro order  by id;");
+        $salida=$query->result();
+        return $salida;         
+    } 
 }

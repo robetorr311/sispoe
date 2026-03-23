@@ -256,11 +256,13 @@ class Asignar extends MY_Controller {
 		$this->pdf->Cell(200,10,'Institucion: '.utf8_decode($establecimiento),0,1,'L');
 		$this->pdf->Cell(200,10,'Estado: '.utf8_decode($estado),0,1,'L');
 		$y=$this->pdf->GetY();
+		$this->pdf->SetHeight(10);
 		$this->pdf->SetWidths(array(40,30,50,45,30));
 		$this->pdf->Line($x, $y, $x + 200, $y);		
     	$this->pdf->Row(array('Servicios','Preparados','Periodo de Control','Control Dosimetrico','Cant. de Dosimetros'));
     	$this->pdf->Line($x, $y+10, $x + 200, $y+10);
-    	$this->pdf->Line($x, $y+20, $x + 200, $y+20);    		
+    	$this->pdf->Line($x, $y+20, $x + 200, $y+20);   
+    	$this->pdf->SetY($y+15); 		
     	$this->pdf->Row(array(utf8_decode($servicio),$fechadoc,$fechainicio.' - '.$fechafin,utf8_decode($estudio),$cantidad)); 
     	$this->pdf->SetY($y+40); 
     	$this->pdf->Line($x+40, $y+50, $x + 90, $y+50);
@@ -363,6 +365,7 @@ class Asignar extends MY_Controller {
 		$this->pdf->Cell(50,10,'Periodo: '.$fechainicio.' - '.$fechafin,0,1,'L');
 		$this->pdf->Cell(200,10,'Estado: '.utf8_decode($estado),0,1,'L');
 		$y=$this->pdf->GetY();
+		$this->pdf->SetHeight(10);
 		$this->pdf->SetWidths(array(10,30,70,30,30,30));
 		$this->pdf->Line($x, $y, $x + 200, $y);	
     	$this->pdf->Row(array('No.','Codigo Personal','Nombre','Dosimetro','Tarjeta','Observaciones'));
@@ -398,7 +401,14 @@ class Asignar extends MY_Controller {
 		$this->pdf->Cell(50,10,' ',0,1,'L');
 		$this->pdf->SetFont('Arial','B',10);
 		$this->pdf->Cell(200,10,utf8_decode('SE PROHIBE LA REPRODUCCIÓN TOTAL O PARCIAL DE ESTE CERTIFICADO SIN LA APROBACIÓN'),0,1,'C');
-		$this->pdf->Cell(200,10,'DEL LABORATORIO QUE LO EMITE',0,1,'C');    	    	
+		$this->pdf->Cell(200,10,'DEL LABORATORIO QUE LO EMITE',0,1,'C');
+		$old_x=$x;
+		$old_y=$y;
+		$this->pdf->SetY($y);
+		$this->pdf->SetX($x);
+		$this->pdf->Image('./assets/img/sello.png',$x+70,$y+55,50,50);									
+		//$this->pdf->Image('./assets/img/sello.png',$x+140,$y+55,50,50);
+		//$this->pdf->Image('./assets/img/firma.png',$x+60,$y+55,80,50);
     	}
     	else{
     		$this->pdf->AddPage();
@@ -422,6 +432,13 @@ class Asignar extends MY_Controller {
 		$this->pdf->SetFont('Arial','B',10);
 		$this->pdf->Cell(200,10,utf8_decode('SE PROHIBE LA REPRODUCCIÓN TOTAL O PARCIAL DE ESTE CERTIFICADO SIN LA APROBACIÓN'),0,1,'C');
 		$this->pdf->Cell(200,10,'DEL LABORATORIO QUE LO EMITE',0,1,'C');
+		$old_x=$x;
+		$old_y=$y;
+		$this->pdf->SetY($y);
+		$this->pdf->SetX($x);	
+		$this->pdf->Image('./assets/img/sello.png',$x+70,$y+55,50,50);							
+		//$this->pdf->Image('./assets/img/sello.png',$x+140,$y+55,50,50);
+		//$this->pdf->Image('./assets/img/firma.png',$x+60,$y+55,80,50);
     	}
 
 		$this->pdf->Output();    	

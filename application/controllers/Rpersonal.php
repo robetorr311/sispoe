@@ -145,6 +145,7 @@ class Rpersonal extends MY_Controller {
 						$y=$this->pdf->GetY();
 						$this->pdf->Line($x, $y, $x + 200, $y);
 						$this->pdf->SetFont('Arial','B',10);
+						$this->pdf->SetHeight(6);
 						$this->pdf->SetWidths(array(25,40,20,20,40,40,70,40));			
 			    		$this->pdf->Row(array('Codigo','Nombre','Cedula','Sexo','Cargo','Servicio','Establecimiento','Telefono'));			
 
@@ -189,8 +190,9 @@ class Rpersonal extends MY_Controller {
 					$y=$this->pdf->GetY();
 					$this->pdf->Line($x, $y, $x + 200, $y);
 					$this->pdf->SetFont('Arial','B',10);
-						$this->pdf->SetWidths(array(25,40,20,20,40,40,70,40));			
-			    		$this->pdf->Row(array('Codigo','Nombre','Cedula','Sexo','Cargo','Servicio','Establecimiento','Telefono'));			
+					$this->pdf->SetHeight(6);
+					$this->pdf->SetWidths(array(25,40,20,20,40,40,70,40));			
+			    	$this->pdf->Row(array('Codigo','Nombre','Cedula','Sexo','Cargo','Servicio','Establecimiento','Telefono'));			
 
 					$this->pdf->Line($x, $y, $x + 280, $y);
 			    	$y=$this->pdf->GetY();
@@ -248,6 +250,7 @@ class Rpersonal extends MY_Controller {
 						$y=$this->pdf->GetY();
 						$this->pdf->Line($x, $y, $x + 200, $y);
 						$this->pdf->SetFont('Arial','B',10);
+						$this->pdf->SetHeight(6);
 						$this->pdf->SetWidths(array(25,40,20,20,40,40,70,40));			
 			    		$this->pdf->Row(array('Codigo','Nombre','Cedula','Sexo','Cargo','Servicio','Establecimiento','Telefono'));		
 
@@ -292,8 +295,9 @@ class Rpersonal extends MY_Controller {
 					$y=$this->pdf->GetY();
 					$this->pdf->Line($x, $y, $x + 200, $y);
 					$this->pdf->SetFont('Arial','B',10);
-						$this->pdf->SetWidths(array(25,40,20,20,40,40,70,40));			
-			    		$this->pdf->Row(array('Codigo','Nombre','Cedula','Sexo','Cargo','Servicio','Direccion','Telefono'));			
+					$this->pdf->SetHeight(6);
+					$this->pdf->SetWidths(array(25,40,20,20,40,40,70,40));			
+			    	$this->pdf->Row(array('Codigo','Nombre','Cedula','Sexo','Cargo','Servicio','Direccion','Telefono'));			
 
 					$this->pdf->Line($x, $y, $x + 280, $y);
 			    	$y=$this->pdf->GetY();
@@ -353,6 +357,7 @@ class Rpersonal extends MY_Controller {
 						$y=$y-5;
 						$y=$this->pdf->GetY();
 						$this->pdf->Line($x, $y, $x + 200, $y);
+						$this->pdf->SetHeight(6);
 						$this->pdf->SetFont('Arial','B',10);
 						$this->pdf->SetWidths(array(25,40,20,20,40,40,70,40));			
 			    		$this->pdf->Row(array('Codigo','Nombre','Cedula','Sexo','Cargo','Servicio','Direccion','Telefono'));			
@@ -399,6 +404,7 @@ class Rpersonal extends MY_Controller {
 					$y=$this->pdf->GetY();
 					$this->pdf->Line($x, $y, $x + 200, $y);
 					$this->pdf->SetFont('Arial','B',10);
+					$this->pdf->SetHeight(6);
 					$this->pdf->SetWidths(array(25,40,20,20,40,40,70,40));			
 			    	$this->pdf->Row(array('Codigo','Nombre','Cedula','Sexo','Cargo','Servicio','Direccion','Telefono'));			
 

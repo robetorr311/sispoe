@@ -57,4 +57,5 @@ class pdf extends PDF_MC_Table  {
 		$this->Cell(0,10,$this->PageNo().' de {nb}',0,0,'R');
 		*/
 	}
+	
 }

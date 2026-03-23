@@ -188,7 +188,16 @@
                 <td><?php echo $row->estado; ?></td>
                 <td><?php echo $row->municipio; ?></td>
                 <td><?php echo $row->parroquia; ?></td>
-                <td><button class="btn btn-block <?php echo $color; ?> btn-xs" onclick="registro('<?php echo $row->id; ?>');">Ver Registro</button></td>
+                <td>
+
+                  <button class="btn btn-block <?php echo $color; ?> btn-xs" onclick="registro('<?php echo $row->id; ?>');">Ver Registro</button>
+                  <?php
+                  if($idusuario==1){
+                     echo "<button class=\"btn btn-block ".$color." btn-xs\" onclick=\"eliminar('".$row->id."');\">Eliminar</button>";
+                  }
+                  ?>
+
+                </td>
             </tr>
           <?php endforeach; ?>
         </tbody>

@@ -25,6 +25,7 @@ class Establecimientos extends MY_Controller {
 			$data['estados']=$this->Ubicacion_model->select_estados();
 			$data['servicios']=$this->Establecimientos_model->select_servicios();
 			$data['listado']=$this->Establecimientos_model->listado();
+			$data['idusuario']=$idusuario;
 			$this->load->model('Menu_model');
 			$data['color']=$this->Menu_model->get_color('Establecimientos');
 			$this->add_view('establecimientos/estab_inicial_view',$data);
@@ -98,6 +99,7 @@ class Establecimientos extends MY_Controller {
 		$this->Sesion_model->actividad($idcontrolador,$idusuario , 1 , 6,$idsesion);		
 		$codigo=$this->Establecimientos_model->get_id();
 		$data['codigo']=$codigo;
+		$data['idusuario']=$idusuario;
 		$reg=$this->Establecimientos_model->val_tmppractica($codigo);
 		if($reg==0){
 			$v=$this->Establecimientos_model->crear_tmppractica($codigo);
@@ -124,6 +126,7 @@ class Establecimientos extends MY_Controller {
 		$idcontrolador=$this->Controladores_model->get_id('Establecimientos');
 		$this->Sesion_model->actividad($idcontrolador,$idusuario , 1 , 7,$idsesion);				
 		$data['servicios']=$this->Establecimientos_model->select_servicios();
+		$data['idusuario']=$idusuario;
 		$establecimiento=$this->Establecimientos_model->registro($id);
         foreach ($establecimiento as $row)
             {
@@ -180,6 +183,7 @@ class Establecimientos extends MY_Controller {
 		$idcontrolador=$this->Controladores_model->get_id('Establecimientos');
 		$this->Sesion_model->actividad($idcontrolador,$idusuario , 1 , 8,$idsesion);
 		$data['servicios']=$this->Establecimientos_model->select_servicios();
+		$data['idusuario']=$idusuario;
 		$establecimiento=$this->Establecimientos_model->registro($id);
         foreach ($establecimiento as $row)
             {
@@ -223,7 +227,8 @@ class Establecimientos extends MY_Controller {
 			$data['estados']=$estados; 
 			$data['municipios']=$municipios; 
 			$data['parroquias']=$parroquias; 
-			$data['director']=$director;     		
+			$data['director']=$director;
+			$data['idusuario']=$idusuario;     		
 			$data['rif']=$rif;     		
 		$this->load->model('Menu_model');
 		$data['color']=$this->Menu_model->get_color('Establecimientos');
@@ -274,6 +279,7 @@ class Establecimientos extends MY_Controller {
 			$data['rif']=$rif;
 			$data['servicios']=$this->Establecimientos_model->select_servicios();		
 			$data['tmppractica']=$this->Establecimientos_model->get_practica($codigo);
+			$data['idusuario']=$idusuario;
 		$this->load->model('Menu_model');
 		$data['color']=$this->Menu_model->get_color('Establecimientos');
 			$this->load->view('establecimientos/estab_guardado_view',$data);
@@ -357,4 +363,14 @@ class Establecimientos extends MY_Controller {
 		$data['color']=$this->Menu_model->get_color('Establecimientos');
        	$this->load->view('establecimientos/error_servicios',$data);
     } 	
+	public function eliminar()
+	{
+		$this->load->model('Establecimientos_model');
+        $id=$this->input->post('id');
+        $this->Establecimientos_model->eliminar_establecimiento($id);
+        $this->Establecimientos_model->eliminar_personalestablecimiento($id);
+        $this->Establecimientos_model->eliminar_serviciosestablecimiento($id);
+        $this->Establecimientos_model->eliminar_practicapersonal($id);
+        $this->Establecimientos_model->eliminar_personalservicios($id);
+	}
 }	

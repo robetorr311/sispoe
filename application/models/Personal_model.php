@@ -398,5 +398,21 @@ class Personal_model extends CI_Model {
     public function drop_tmp_ant($codigo){
         $sql="select * from sys_tmp.drop_tmp_ant($codigo);";
         $query = $this->db->query($sql);
-    }     
+    }
+    public function eliminar_persona($id){
+        $this->db->where('id', $id);
+        $this->db->delete('sys_poe.personal'); 
+    } 
+    public function eliminar_personalestablecimiento($id){
+        $this->db->where('idpersonal', $id);
+        $this->db->delete('sys_poe.personalestablecimiento');
+    }
+    public function eliminar_practicapersonal($id){
+        $this->db->where('idpersonal', $id);
+        $this->db->delete('sys_poe.practicapersonal');
+    }
+    public function eliminar_personalservicios($id){
+        $this->db->where('idpersonal', $id);
+        $this->db->delete('sys_poe.personalservicios');
+    }
 }

@@ -111,6 +111,19 @@ function smunicipios() {
     }  
   });
 }
+function eliminar(id) {
+  if(confirm('Por favor confirma la eliminacion de este establecimiento')) {
+    $.ajax({
+      url:  base_url + '/Establecimientos/eliminar',
+      type: 'POST',
+      async: true,
+      data: { id:id },
+      success: function(respuesta) {
+        location.reload();
+      }
+    });  
+  }
+}
 function spractica() {
   $.ajax({
     url:  base_url + '/Establecimientos/servicios',

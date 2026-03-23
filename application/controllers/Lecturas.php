@@ -72,32 +72,29 @@ class Lecturas extends MY_Controller {
 						$dosis = trim($rec[21]);
 						$excluir = trim($rec[28]);
 						$pos = strpos($excluir, "nC");
-						$comp=$this->Lecturas_model->comprueba($tarjeta);
-						if ($comp>0){
-							$c=1;
-							if ($pos === false) {
-							$this->Lecturas_model->iarchivos($idarchivo, $nombrearchivo1,  $size,  $tipo,  $escaped);	
-							$iddosimetro=$this->Lecturas_model->get_idtarjeta($tarjeta);
-							$registro=$this->Lecturas_model->registro($iddosimetro);
-							foreach ($registro as $row) {
-								$iddocumento=$row->iddocumento;
-								$idpersonal=$row->idpersona;
-							}
-							$this->Lecturas_model->ilecturas($iddosimetro , $idpersonal , $fecha , $dosis , $iddocumento, $nombrearchivo1 );
-							}							
-						}  
+						$c=1;
+						if ($pos === false) {
+						$this->Lecturas_model->iarchivos($idarchivo, $nombrearchivo1,  $size,  $tipo,  $escaped);	
+						$iddosimetro=$this->Lecturas_model->get_idtarjeta($tarjeta);
+						$registro=$this->Lecturas_model->registro2($iddosimetro);
+						foreach ($registro as $row) {
+							$iddocumento=$row->iddocumento;
+							$idpersonal=$row->idpersona;
+						}
+						$this->Lecturas_model->ilecturas($iddosimetro , $idpersonal , $fecha , $dosis , $iddocumento, $nombrearchivo1 );
+						}							
 					}
 					$data['listado']=$this->Lecturas_model->listado();					
 					$data['lectura']=$this->Lecturas_model->get_lecturas($nombrearchivo1);	        
-		$this->load->model('Menu_model');
-		$data['color']=$this->Menu_model->get_color('Lecturas');
+		            $this->load->model('Menu_model');
+		            $data['color']=$this->Menu_model->get_color('Lecturas');
 			        $this->add_view('lecturas/lecturas_guardada_view',$data);					
 				}
 				else {
 					$data['error'] = "Falto seleccionar el archivo";
 					$data['e']=1;
-		$this->load->model('Menu_model');
-		$data['color']=$this->Menu_model->get_color('Lecturas');
+		            $this->load->model('Menu_model');
+		            $data['color']=$this->Menu_model->get_color('Lecturas');
 					$this->add_view('lecturas/lecturas_inicial_view',$data);		
 				} 			
 		}						
