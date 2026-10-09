@@ -8,9 +8,7 @@
     <script src="<?php echo base_url(); ?>assets/js/jquery.inputmask.extensions.js"></script>
   
     <script src="<?php echo base_url(); ?>assets/js/establecimientos/establecimientos.js"></script>    
-   
-
-  
+   <script src="<?php echo base_url(); ?>assets/js/plugins/moment.min.js"></script>
         <section class="content">
           <div class="box box-default">
             <div class="box-header with-border <?php echo $color; ?>">
@@ -44,7 +42,7 @@
                   <div id="cont_telefono">
                     <div class="input-group">
                       <span class="input-group-addon"><i class="fa fa-phone-square"></i></span>
-                      <input type="text" class="form-control" disabled name="telefono" id="telefono" placeholder="TELEFONO" data-inputmask='"mask": "(999) 9999999"' data-mask>
+                      <input type="text" class="form-control" disabled name="telefono" id="telefono" placeholder="TELEFONO" data-inputmask='"mask": "(9999) 999-9999"' data-mask>
                     </div>
                   </div>  
                   </div><!-- /.col -->
@@ -142,11 +140,51 @@
               <div class="box-footer">
                   <button type="button"  class="btn <?php echo $color; ?>" onclick="nuevo();">Agregar Nuevo</button>
                   <button type="submit" disabled class="btn <?php echo $color; ?>">Guardar</button>
+                  <button type="button" class="btn <?php echo $color; ?>" id="button_osr" disabled> Agregar/Editar OSR</button>
               </div>            
               </form>
             </div><!-- /.container -->
         <!-- Modal -->         
-          </div><!-- /.box -->                
+          </div><!-- /.box --> 
+          <div id="container_osr" >
+          <!-- Modal Establecimientos content-->
+            <div id="modalosr" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Asignar OSR</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div id="body-osr">
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn <?php echo $color; ?>"  data-dismiss="modal" >Cerrar</button>
+                  </div>              
+                </div>
+              </div>    <!-- /.Modal Establecimientos content-->  
+            </div>
+          </div>
+          <div id="modalpersonal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Personal Adscrito</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div id="body-personal">
+                    </div>
+                  </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn <?php echo $color; ?>" data-dismiss="modal">Cerrar</button>
+                </div>              
+              </div>
+            </div> 
+          </div>
         </section>
 
         <!-- Main content -->
@@ -158,6 +196,7 @@
                   <h3 class="box-title">Listado de Establecimientos</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body table-responsive">
+                <a type="button"  class="btn <?php echo $color; ?> btn-xs" href="<?php echo base_url(); ?>index.php/Establecimientos/export" target="blank">Exportar</a>
                   <table id="tablae" class="table table-striped table-bordered" cellspacing="0" width="100%">
                    <thead>
                       <tr>
@@ -226,6 +265,5 @@
 
     <script src="<?php echo base_url(); ?>assets/js/jquery.dataTables.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/dataTables.bootstrap.min.js"></script>
-    <script src="<?php echo base_url(); ?>assets/js/plugins/input-mask/jquery.inputmask.js"></script>
-    <script src="<?php echo base_url(); ?>assets/js/plugins/input-mask/jquery.inputmask.extensions.js"></script>      
+  
     

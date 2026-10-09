@@ -140,11 +140,11 @@ class Reportedosis extends MY_Controller {
 		foreach ($datosreporte as $row):           
 			$k++;
         endforeach;
-        if ($k<10){
+        if ($k<15){
         	$paginas=1;
         }
         else {
-        	$p=$k/10;
+        	$p=$k/15;
 			$paginas=round($p, 1);
 		}
 		$dj=time();
@@ -279,7 +279,7 @@ class Reportedosis extends MY_Controller {
 		    else{
 		        $this->pdf->SetFont('Arial','',10);
 		        //$this->pdf->Row(array($nro,$idpersona,mb_convert_encoding($personal,'ISO-8859-1', 'UTF-8'),$dosis,$acum));
-		        $this->pdf->Row(array($nro,$idpersona,utf8_decode($personal),$dosis,$acum));
+		        $this->pdf->Row(array($nro,$idpersona,utf8_decode($personal),round($dosis,2),round($acum,2)));
 		    }
         endforeach;
 		$y=$this->pdf->GetY();
@@ -425,12 +425,12 @@ class Reportedosis extends MY_Controller {
                 $dosis=$row2->ndosis; 
                 $acum=$row2->nacumulada;
                 if($idpersona==0){
-                	$this->pdf->Row(array($nro,$idpersona,'TESTIGO',$dosis,'-'));
+                	$this->pdf->Row(array($nro,$idpersona,'TESTIGO',round($dosis,2),'-'));
                 }
                 else{
                     $this->pdf->SetFont('Arial','',10);
                     //$this->pdf->Row(array($nro,$idpersona,mb_convert_encoding($personal,'ISO-8859-1', 'UTF-8'),$dosis,$acum));
-                    $this->pdf->Row(array($nro,$idpersona,utf8_decode($personal),$dosis,$acum));
+                    $this->pdf->Row(array($nro,$idpersona,utf8_decode($personal),round($dosis,2),round($acum,2)));
                 }			          
 	        endforeach;
 			$y=$this->pdf->GetY();
@@ -483,7 +483,7 @@ class Reportedosis extends MY_Controller {
 			$this->pdf->SetX($x);
 			$this->pdf->SetFont('Arial','B',8);		
 			$this->pdf->Cell(100,10,$telef,0,1,'L');
-			$limite=$limite+10;
+			$limite=$limite+15;
 		}	
 		}
 		$this->pdf->Output();

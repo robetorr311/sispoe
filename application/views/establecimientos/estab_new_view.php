@@ -5,7 +5,8 @@
                     <div id="cont_codigo">
                       <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
-                        <input type="text" name="codigo" value="<?php echo $codigo; ?>" id="codigo" class="form-control"  placeholder="CODIGO">
+                        <input type="hidden" name="codigo" value="<?php echo $codigo; ?>" id="codigo">
+                        <input type="text" name="codigo_view" value="<?php echo $codigo; ?>" id="codigo_view" class="form-control"  placeholder="CODIGO" disabled>
                       </div>
                     </div>
                   </div><!-- /.col -->
@@ -27,7 +28,7 @@
                       <input type="text" class="form-control"  name="telefono" id="telefono" placeholder="TELEFONO" >
                     </div>
                   <script type="text/javascript">
-                    $("#telefono").inputmask({"mask": "(999) 999-9999"});
+                    $("#telefono").inputmask({"mask": "(9999) 999-9999"});
                   </script> 
                   </div>
                   
@@ -58,7 +59,7 @@
                       <option value="0">SELECCIONE SERVICIO</option>
                         <?php echo $servicios; ?>
                         </select>
-                        <button type="button"   class="btn <?php echo $color; ?>" onclick="spractica();">Agregar</button>
+                        <button type="button" class="btn <?php echo $color; ?>" onclick="spractica();">Agregar</button>
                     </div>
                   </div>
                   </div>                                  
@@ -125,6 +126,7 @@
               </div>
               <div class="box-footer">
                   <button type="button" onclick="guardar();" class="btn <?php echo $color; ?>" >Guardar</button>
+                  <button type="button" class="btn <?php echo $color; ?>" onclick="osr('<?php echo $codigo; ?>');" > Agregar/Editar OSR</button>
                   <a type="button" href="<?php echo base_url(); ?>index.php/Establecimientos/index" class="btn <?php echo $color; ?>">Cancelar</a>                    
                     
               </div>        

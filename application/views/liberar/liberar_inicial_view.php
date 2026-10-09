@@ -48,7 +48,8 @@
                         </div>                  
                       </div><!-- /.box-header -->
                       <div class="box-footer">
-                          <input type="submit"  class="btn <?php echo $color; ?>" value="Continuar">
+                        <button type="button" class="btn <?php echo $color; ?>" disabled="">Continuar</button> 
+                          <!-- <input type="submit"  class="btn <?php echo $color; ?>" value="Continuar"> -->
                       </div>                       
                     </div><!-- /.box -->  
                   </div><!-- /.col -->

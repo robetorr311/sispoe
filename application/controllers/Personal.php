@@ -876,5 +876,91 @@ class Personal extends MY_Controller {
         $this->Personal_model->eliminar_practicapersonal($id);
         $this->Personal_model->eliminar_personalservicios($id);
 	}
-	
+		public function export()
+	{
+		$time=time();
+    	$dd = date("d",$time);
+		$mes=date("m",$time);
+    	$anio=date("Y",$time);
+    	$fecha=$dd.'-'.$mes.'-'.$anio;
+		$this->load->library('excel');
+		$this->load->model('Personal_model');
+		$personal=$this->Personal_model->exportar();
+        $this->excel->setActiveSheetIndex(0);
+        $this->excel->getActiveSheet()->setTitle('Personal');
+        $this->excel->getActiveSheet()->setCellValue('A1','Codigo');
+        $this->excel->getActiveSheet()->setCellValue('B1','Nombre');
+        $this->excel->getActiveSheet()->setCellValue('C1','Cedula');
+        $this->excel->getActiveSheet()->setCellValue('D1','Fecha de Nacimiento');
+        $this->excel->getActiveSheet()->setCellValue('E1','Genero');
+        $this->excel->getActiveSheet()->setCellValue('F1','Direccion');
+        $this->excel->getActiveSheet()->setCellValue('G1','Correo');
+        $this->excel->getActiveSheet()->setCellValue('H1','Telefono');
+        $this->excel->getActiveSheet()->setCellValue('I1','Estado');
+        $this->excel->getActiveSheet()->setCellValue('J1','Municipio');
+        $this->excel->getActiveSheet()->setCellValue('K1','Parroquia');
+        $this->excel->getActiveSheet()->setCellValue('L1','Ocupacion');
+        $this->excel->getActiveSheet()->setCellValue('M1','Cargo');
+        $this->excel->getActiveSheet()->setCellValue('N1','Nacionalidad');
+        $this->excel->getActiveSheet()->setCellValue('O1','Servicio');
+        $this->excel->getActiveSheet()->setCellValue('P1','Institucion');
+        $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('B1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('C1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('D1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('E1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('F1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('G1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('H1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('I1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('J1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('K1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('L1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('M1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('N1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('O1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('P1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('B1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('C1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('D1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('E1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('F1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('G1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('H1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('I1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('J1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('K1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('L1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('M1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('N1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('O1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('P1')->getFont()->setBold(true);
+        //$this->excel->getActiveSheet()->mergeCells('A1:D1');
+        $k=2;
+        foreach ($personal as $row) {
+            $this->excel->getActiveSheet()->setCellValue('A'.$k,$row->poe);
+            $this->excel->getActiveSheet()->setCellValue('B'.$k,$row->nombre.' '.$row->nombre2.', '.$row->apellido1.' '.$row->apellido2);
+            $this->excel->getActiveSheet()->setCellValue('C'.$k,$row->cedula);
+            $this->excel->getActiveSheet()->setCellValue('D'.$k,$row->fechanacimiento);
+            $this->excel->getActiveSheet()->setCellValue('E'.$k,$row->genero);
+            $this->excel->getActiveSheet()->setCellValue('F'.$k,$row->direccion_establecimiento);
+            $this->excel->getActiveSheet()->setCellValue('G'.$k,$row->correo);
+            $this->excel->getActiveSheet()->setCellValue('H'.$k,$row->telefono);
+            $this->excel->getActiveSheet()->setCellValue('I'.$k,$row->estado_establecimiento);
+            $this->excel->getActiveSheet()->setCellValue('J'.$k,$row->municipio_establecimiento);
+            $this->excel->getActiveSheet()->setCellValue('K'.$k,$row->parroquia_establecimiento);
+            $this->excel->getActiveSheet()->setCellValue('L'.$k,$row->profesion);
+            $this->excel->getActiveSheet()->setCellValue('M'.$k,$row->cargo);
+            $this->excel->getActiveSheet()->setCellValue('N'.$k,$row->nacionalidad);
+            $this->excel->getActiveSheet()->setCellValue('O'.$k,$row->nombre_establecimento);
+            $this->excel->getActiveSheet()->setCellValue('P'.$k,$row->nombreservicio);
+            $k=$k+1;
+        }
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="personal_activo_al_'.$fecha.'.xls"');
+        header('Cache-Control: max-age=0');
+        $objwriter= PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
+        $objwriter->save('php://output');
+	}
 }	

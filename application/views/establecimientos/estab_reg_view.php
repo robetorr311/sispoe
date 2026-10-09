@@ -160,25 +160,11 @@
               <div class="box-footer">
                   <button type="button" class="btn <?php echo $color; ?>" onclick="editar('<?php echo $codigo; ?>');">Modificar</button>
                   <button type="button" class="btn <?php echo $color; ?>" onclick="personal('<?php echo $codigo; ?>');">Personal Adscrito</button>
+                  <button type="button" class="btn <?php echo $color; ?>" onclick="osr('<?php echo $codigo; ?>');" > Agregar/Editar OSR</button>
                   <button type="submit" class="btn <?php echo $color; ?>" disabled >Guardar</button>
                   <a type="button" href="<?php echo base_url(); ?>index.php/Establecimientos/index" class="btn <?php echo $color; ?>">Regresar</a>                  
               </div>
-            <div id="modalpersonal" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Personal Adscrito</h4>
-                  </div>
-                  <div class="modal-body">
-
-                  </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn <?php echo $color; ?>" data-dismiss="modal">Cerrar</button>
-                </div>              
-                  </div>
-                </div>    <!-- /.Modal Establecimientos content-->              
+   <!-- /.Modal Establecimientos content-->              
               </form>
 
 

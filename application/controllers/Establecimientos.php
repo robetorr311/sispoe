@@ -373,4 +373,121 @@ class Establecimientos extends MY_Controller {
         $this->Establecimientos_model->eliminar_practicapersonal($id);
         $this->Establecimientos_model->eliminar_personalservicios($id);
 	}
+	public function export()
+	{
+		$time=time();
+    	$dd = date("d",$time);
+		$mes=date("m",$time);
+    	$anio=date("Y",$time);
+    	$fecha=$dd.'-'.$mes.'-'.$anio;
+		$this->load->library('excel');
+		$this->load->model('Establecimientos_model');
+		$establecimientos=$this->Establecimientos_model->exportar();
+        $this->excel->setActiveSheetIndex(0);
+        $this->excel->getActiveSheet()->setTitle('Instituciones');
+        $this->excel->getActiveSheet()->setCellValue('A1','Codigo');
+        $this->excel->getActiveSheet()->setCellValue('B1','Nombre');
+        $this->excel->getActiveSheet()->setCellValue('C1','Direccion');
+        $this->excel->getActiveSheet()->setCellValue('D1','Correo');
+        $this->excel->getActiveSheet()->setCellValue('E1','Telefono');
+        $this->excel->getActiveSheet()->setCellValue('F1','Codigo Estado');
+        $this->excel->getActiveSheet()->setCellValue('G1','Codigo Municipio');
+        $this->excel->getActiveSheet()->setCellValue('H1','Codigo Parroquia');
+        $this->excel->getActiveSheet()->setCellValue('I1','Estado');
+        $this->excel->getActiveSheet()->setCellValue('J1','Municipio');
+        $this->excel->getActiveSheet()->setCellValue('K1','Parroquia');
+        $this->excel->getActiveSheet()->setCellValue('L1','Director');
+        $this->excel->getActiveSheet()->setCellValue('M1','RIF');
+        $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('B1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('C1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('D1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('E1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('F1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('G1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('H1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('I1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('J1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('K1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('L1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('M1')->getFont()->setSize(12);
+        $this->excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('B1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('C1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('D1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('E1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('F1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('G1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('H1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('I1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('J1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('K1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('L1')->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle('M1')->getFont()->setBold(true);
+
+        //$this->excel->getActiveSheet()->mergeCells('A1:D1');
+        $k=2;
+        foreach ($establecimientos as $row) {
+            $this->excel->getActiveSheet()->setCellValue('A'.$k,$row->id);
+            $this->excel->getActiveSheet()->setCellValue('B'.$k,$row->nombre);
+            $this->excel->getActiveSheet()->setCellValue('C'.$k,$row->direccion);
+            $this->excel->getActiveSheet()->setCellValue('D'.$k,$row->correo);
+            $this->excel->getActiveSheet()->setCellValue('E'.$k,$row->telefono);
+            $this->excel->getActiveSheet()->setCellValue('F'.$k,$row->idestado);
+            $this->excel->getActiveSheet()->setCellValue('G'.$k,$row->idmunicipio);
+            $this->excel->getActiveSheet()->setCellValue('H'.$k,$row->idparroquia);
+            $this->excel->getActiveSheet()->setCellValue('I'.$k,$row->estado);
+            $this->excel->getActiveSheet()->setCellValue('J'.$k,$row->municipio);
+            $this->excel->getActiveSheet()->setCellValue('K'.$k,$row->parroquia);
+            $this->excel->getActiveSheet()->setCellValue('L'.$k,$row->director);
+            $this->excel->getActiveSheet()->setCellValue('M'.$k,$row->rif);
+            $k=$k+1;
+        }
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="instituciones_al_'.$fecha.'.xls"');
+        header('Cache-Control: max-age=0');
+        $objwriter= PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
+        $objwriter->save('php://output');
+	}
+    public function modal_osr()
+	{
+		$this->load->model('Establecimientos_model');
+        $id=$this->input->get('id');
+		$this->load->model('Menu_model');
+		$data['color']=$this->Menu_model->get_color('Establecimientos');
+		$data['idestablecimento']=$id;
+        $osr=$this->Establecimientos_model->get_osr($id);
+        if($osr[0]>0){
+        	$data['result']=$osr[1];
+        	$data['idosr']=$osr[0]; 
+        }
+        else{
+            $data['idosr']=$this->Establecimientos_model->get_new_id_osr();
+        } 
+        $this->load->view('establecimientos/modalosr',$data);
+	}
+    public function guardarosr()
+	{
+		$this->load->model('Establecimientos_model');
+        $id=$this->input->post('idosr');
+		$idestablecimento=$this->input->post('idestablecimento'); 
+		$nombre=$this->input->post('nombreosr'); 
+		$cedula=$this->input->post('cedulaosr'); 
+		$correo=$this->input->post('correoosr'); 
+		$telefono=$this->input->post('telefonoosr'); 
+		$fecha=$this->input->post('fechaosr');
+        $osr=$this->Establecimientos_model->iosr($id,$nombre ,$cedula ,$fecha ,$correo ,$telefono ,$idestablecimento);
+        if(!empty($osr)){
+        	$data['osr']=$osr;
+            $data['status'] = 'ok';
+            $data['message'] = "Se guardo correctamente.";
+            return $this->output->set_content_type('application/json')->set_status_header('200')->set_output(json_encode($data));
+        }
+        else{
+        	$data['status'] = 'error';
+        	$data['message'] = "No se pudo guardar intente nuevamente";
+           return $this->output->set_content_type('application/json')->set_status_header('500')->set_output(json_encode($data));
+        }
+        
+	}
 }	

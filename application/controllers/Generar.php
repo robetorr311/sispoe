@@ -767,5 +767,12 @@ class Generar extends MY_Controller {
 		}	
 		$this->pdf->Output();			
 	}	             
-
+	public function pwd_anular()
+	{
+		$this->load->model('Generar_model');
+		$this->load->model('Menu_model');
+		$passwd=$this->input->post('passwd');
+		$data['result']=$this->Generar_model->get_password($passwd);
+		$this->load->view('generar/result',$data);
+	}
 }	

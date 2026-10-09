@@ -123,8 +123,75 @@ class Lecturas_model extends CI_Model {
     public function registro2($iddosimetro)
     {
         if (empty($salida)) { $salida=""; }        
-        $query = $this->db->query("select * from sys_poe.dosimetropersona where idtarjeta=$iddosimetro order  by id;");
+        $query = $this->db->query("select * from sys_poe.dosimetropersona where idtarjeta=$iddosimetro and estatus=14 order  by id;");
         $salida=$query->result();
         return $salida;         
     } 
+    public function get_liberada($tarjeta)
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select * from sys_poe.tarjetas where sinceros='$tarjeta';");   
+        $salida=$query->result();
+        foreach ($query->result() as $row)
+        {
+                $salida=$row->liberada;
+        }        
+        return $salida;              
+    }
+    public function registro3($iddosimetro)
+    {
+        if (empty($salida)) { $salida=""; }        
+        $query = $this->db->query("select * from sys_poe.dosimetropersona where idtarjeta=$iddosimetro and liberada=1 order  by id;");
+        $salida=$query->result();
+        return $salida;         
+    }
+    public function get_documento($tarjeta)
+    {
+        if (empty($salida)) { $salida=""; }        
+        $query = $this->db->query("select iddocumento from sys_poe.dosimetropersona where idtarjeta=$tarjeta;");
+        $salida=$query->result();
+        return $salida;         
+    } 
+    public function get_norecibidos($documento)
+    {
+        if (empty($salida)) { $salida=""; }
+        $query = $this->db->query("select *, sys_poe.personalnombre(idpersona), sys_poe.servicionombre(idservicio) from sys_poe.dosimetropersona where iddocumento=$documento and estatus not in (3,14,31);");
+        $salida=$query->result();
+        return $salida;
+    }
+    public function recepcionar($id){
+        $data = array('estatus' => 14);
+        $this->db->where('id', $id);
+        $this->db->update('sys_poe.dosimetropersona', $data);
+    }
+    public function pendiente($id){
+        $data = array('estatus' => 31);
+        $this->db->where('id', $id);
+        $this->db->update('sys_poe.dosimetropersona', $data);
+    }
+    public function get_documento_norecibidas($tarjeta)
+    {
+        if (empty($salida)) { $salida=""; }        
+        $query = $this->db->query("select iddocumento from sys_poe.dosimetropersona where idtarjeta=$tarjeta and estatus=2;");
+        foreach ($query->result() as $row)
+        {
+                $salida=$row->iddocumento;
+        }        
+        return $salida;         
+    } 
+    public function get_dosimetros_norecibidas($tarjeta)
+    {
+        if (empty($salida)) { $salida=""; }        
+        $query = $this->db->query("select *, sys_poe.personalnombre(idpersona), sys_poe.servicionombre(idservicio) from sys_poe.dosimetropersona where idtarjeta=$tarjeta and estatus=2;");
+        $salida=$query->result();
+        return $salida;         
+    }
+    public function get_dosim_norecibidos($ids)
+    {
+        if (empty($salida)) { $salida=""; }
+        $query = $this->db->query("select *, sys_poe.personalnombre(idpersona), sys_poe.servicionombre(idservicio) from sys_poe.dosimetropersona where estatus not in (3,14,31) and id in($ids);");
+        $salida=$query->result();
+        return $salida;
+    }
 }

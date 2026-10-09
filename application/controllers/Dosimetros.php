@@ -474,5 +474,21 @@ class Dosimetros extends MY_Controller {
     	}
 
 		$this->pdf->Output();    	
+    }
+    public function EnvRecib(){
+    	$this->load->model('Dosimetros_model');	
+		$enviados='';
+		$recibidos='';
+    	$estado=$this->input->post('estado');
+		$tablaer=$this->Dosimetros_model->fenviados_recibidos_estado($estado);
+		foreach ($tablaer as $registroer):
+			$env=$registroer->nenviados;
+			$rec=$registroer->nrecibidos;
+			$enviados.=$env.',';
+			$recibidos.=$rec.',';
+		endforeach;
+		$data['enviados']=$enviados;
+		$data['recibidos']=$recibidos;
+        return $this->output->set_content_type('application/json')->set_status_header('200')->set_output(json_encode($data));
     } 		    		
 }

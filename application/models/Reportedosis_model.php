@@ -53,13 +53,19 @@ class Reportedosis_model extends CI_Model {
     {
         if (empty($salida)) { $salida=""; }
         if ($inicio==0){
-            $query = $this->db->query("select * from sys_poe.freportedosis($in_idestablecimiento,$in_servicio,$in_estudio,'$in_fechai','$in_fechaf') limit 10;");
+            $query = $this->db->query("select * from sys_poe.freportedosis($in_idestablecimiento,$in_servicio,$in_estudio,'$in_fechai','$in_fechaf') limit 15;");
         }
         else {
-            $query = $this->db->query("select * from sys_poe.freportedosis($in_idestablecimiento,$in_servicio,$in_estudio,'$in_fechai','$in_fechaf') limit 10 offset $inicio;");
+            $query = $this->db->query("select * from sys_poe.freportedosis($in_idestablecimiento,$in_servicio,$in_estudio,'$in_fechai','$in_fechaf') limit 15 offset $inicio;");
         }        
         $salida=$query->result();            
         return $salida;         
     }    
-    //select * from sys_poe.freportedosis(400,3,2,'01/05/2015','31/05/2015') limit 15 offset 15;          
+    public function getservicio_establecimiento($idestablecimiento)
+    {
+        if (empty($salida)) { $salida=""; }
+        $query = $this->db->query("select * from sys_poe.fservicios_establecimiento($idestablecimiento);");
+        $salida=$query->result();
+        return $salida;
+    }         
 }

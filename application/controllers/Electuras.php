@@ -46,6 +46,9 @@ class Electuras extends MY_Controller {
         $idtarjeta=$this->input->post('idtarjeta');
         $idpersonal=$this->input->post('idpersonal');
         $dosis=$this->input->post('dosis'); 
+        if(empty($idpersonal)){
+            $idpersonal=0;
+        }
         $salida=$this->Lecturas_model->ilecturas_new($dosimetro,$idtarjeta,$idpersonal,$dosis);
         $data['Success']='Success';
         echo $salida;

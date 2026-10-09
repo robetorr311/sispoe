@@ -164,5 +164,65 @@ class Dosimetros_model extends CI_Model {
         $salida=$query->result();
         return $salida;         
     }
-     
+    public function fenviados_recibidos_estado($estado)
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select * from sys_poe.fenviados_recibidos_estado($estado);");
+        $salida=$query->result();
+        return $salida;         
+    }
+    public function select_estatus_dosimetro()
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select * from sys_poe.estatus where idtipoestatus=1 order by nombre;");   
+        foreach ($query->result() as $row)
+            {
+                $salida.="<option value=\"".$row->id."\">".$row->nombre."</option>";
+            }
+        return $salida;         
+    } 
+    public function freportedosimetros($idestado,$idestablecimiento,$idservicio,$idestudio,$estatus)
+    {
+        if (empty($salida)) { $salida=""; }
+        $data=[];
+        if($idestado>0){
+            $data['idestado']=$idestado;    
+        }
+        if($idestablecimiento>0){
+            $data['idestablecimiento']=$idestablecimiento;    
+        }
+        if($idservicio>0){
+            $data['idservicio']=$idservicio;    
+        }
+        if($idestudio>0){
+            $data['idestudio']=$idestudio;    
+        }
+        $this->db->select('*');
+        $this->db->from('sys_poe.vdosimetros');
+        $this->db->where('fechainicio >','01-01-2025');
+        switch ($estatus) {
+            case 1:
+                $this->db->where('estatus',1);
+                break;
+            case 2:
+                $this->db->where_in('estatus',[2,31]);
+                break;
+            case 3:
+                $this->db->where('estatus',14);
+                break;
+            case 4:
+                $this->db->where('estatus',3);
+                break;
+            default:
+                break;
+        }
+        if(!empty($data)){
+            $this->db->where($data);
+        }
+        $query=$this->db->get(); 
+        $salida=$query->result();
+        return $salida;
+    }
 }

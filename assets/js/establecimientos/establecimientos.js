@@ -1,3 +1,8 @@
+  
+
+$(document).ready(function(){
+
+});
 function editar(id) {
   $.ajax({
     url:  base_url + '/Establecimientos/editar',
@@ -13,9 +18,18 @@ function editar(id) {
   });
 }
 function personal(id){
-  $('.modal-body').load(base_url + '/Establecimientos/personal?id='+ id,function(result){
+  /*$('.modal-body').load(base_url + '/Establecimientos/personal?id='+ id,function(result){
       $('#modalpersonal').modal({show:true});
-  });  
+  });*/
+    $.ajax({
+        url:  base_url + '/Establecimientos/personal?id='+ id,
+        type: 'GET',
+        async: true,
+        success: function(respuesta) {
+            $('#body-personal').html((respuesta));
+        }  
+    });
+    $('#modalpersonal').modal({show:true});  
 }
 
 function registro(id) {
@@ -32,7 +46,46 @@ function registro(id) {
     }  
   });
 }
-
+function osr(id){
+    $.ajax({
+        url:  base_url + '/Establecimientos/modal_osr?id='+id,
+        type: 'GET',
+        async: true,
+        success: function(respuesta) {
+            $('#body-osr').html((respuesta));
+        }  
+    });
+    $('#modalosr').modal({show:true});  
+}
+function guardar_osr() {
+  let idestablecimento=$('#idestablecimento').val(); 
+  let nombreosr=$('#nombreosr').val(); 
+  let correoosr=$('#correoosr').val(); 
+  let telefonoosr=$('#telefonoosr').val(); 
+  let fechaosr=$('#fechaosr').val(); 
+  let cedulaosr=$('#cedulaosr').val(); 
+  let idosr=$('#idosr').val(); 
+  $.ajax({
+    url:  base_url + '/Establecimientos/guardarosr',
+      type: 'POST',
+      async: true,    
+      data: {
+            idestablecimento:idestablecimento, 
+              nombreosr:nombreosr, 
+              correoosr:correoosr, 
+              telefonoosr:telefonoosr, 
+              fechaosr:fechaosr,
+              cedulaosr:cedulaosr, 
+              idosr:idosr 
+             },
+      success: function(respuesta) {
+        if(respuesta.status=="ok"){
+          let output="<div class='row'><div class='col-xs-12'><div class='box'><div class='box-header bg-aqua'><div class='row'><div class='col-xs-12'><h3 class='box-title'>"+ respuesta.message +"</h3></div></div></div></div></div></div>";
+          $("#mensajeosr").html(output);
+        }
+      }  
+  });          
+}
 function guardar() {
   var codigo=$('#codigo').val(); 
   var nombre=$('#nombre').val(); 

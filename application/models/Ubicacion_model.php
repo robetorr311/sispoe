@@ -79,4 +79,9 @@ class Ubicacion_model extends CI_Model {
             }
         return $salida;         
     }  
+    public function get_estados()
+    {
+        $query = $this->db->query("select * from comun.estados order by nombre;");   
+        return $query->result();
+    }
 }

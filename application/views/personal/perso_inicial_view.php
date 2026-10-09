@@ -338,6 +338,7 @@ $.datepicker.regional['es'] = {
                   <h3 class="box-title">Listado de personal</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body table-responsive">
+                <a type="button"  class="btn <?php echo $color; ?> btn-xs" href="<?php echo base_url(); ?>index.php/Personal/export" target="blank">Exportar</a>
                   <table id="tablae" class="table table-striped table-bordered" cellspacing="0" width="100%">
                    <thead>
                       <tr>

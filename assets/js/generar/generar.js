@@ -186,6 +186,23 @@ function actualizar(id) {
   });    
 }
 function anular(id) {
+  let passwd = prompt("Ingresa la contraseña para anular:");
+  $.ajax({
+    url:  base_url + '/Generar/pwd_anular',
+    type: 'POST',
+    async: true,
+    data: { passwd: passwd },
+    success: function(respuesta) {
+      if(respuesta==passwd){
+         confirmar_anular(id);
+      }
+      else{
+        alert('Contraseña incorrecta.');
+      }
+    }  
+  }); 
+}
+function confirmar_anular(id){
   $.ajax({
     url:  base_url + '/Generar/anular',
     type: 'POST',
@@ -194,7 +211,7 @@ function anular(id) {
     success: function(respuesta) {
       $('#cont_tabla').html((respuesta));
     }  
-  });    
+  }); 
 }
 function error_validado() {
   $.ajax({

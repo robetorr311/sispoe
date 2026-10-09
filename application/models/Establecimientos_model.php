@@ -212,4 +212,78 @@ class Establecimientos_model extends CI_Model {
         $this->db->where('idestablecimiento', $id);
         $this->db->delete('sys_poe.personalservicios');
     }
+    public function exportar()
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select * from sys_poe.vestablecimientos order by estado,nombre;");
+        $salida=$query->result();
+        return $salida;         
+    }
+    public function get_osr($id)
+    {
+        if (empty($salida)) { $salida=0; }
+        $data=[]; 
+        $query = $this->db->query("select * from sys_poe.osr where idestablecimiento=$id;");   
+        $result=$query->result();
+        if(!empty($result)){
+            foreach ($result as $row)
+            {
+                $salida=$row->id;
+            }
+            $data[0]=$salida;
+            $data[1]=$result;
+        }
+        else{
+            $salida=0;
+            $data[0]=$salida;
+            $data[1]=$result;
+        }
+        return $data;              
+    }
+    public function get_new_id_osr()
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select * from nextval('sys_poe.osr_id_seq');");   
+        $salida=$query->result();
+        foreach ($query->result() as $row)
+        {
+                $salida=$row->nextval;
+        }        
+        return $salida;              
+    }
+    public function iosr($id,$nombre ,$cedula ,$fecha ,$correo ,$telefono ,$idestablecimiento)
+    {       
+        $query = $this->db->query("select * from sys_poe.iosr($id,'$nombre' ,'$cedula' ,'$fecha' ,'$correo' ,'$telefono' ,$idestablecimiento );");   
+        $salida=$query->result(); 
+        return $salida;     
+    }
+    public function get_from_estado($id)
+    {
+        $query = $this->db->query("select * from sys_poe.establecimientos where idestado=$id;");   
+        return $query->result();
+    }
+    public function count_enviados($id)
+    {
+        if (empty($salida)) { $salida=0; } 
+        $query = $this->db->query("select count(id) as enviados from sys_poe.dosimetropersona where idestablecimiento=$id and estatus in (2,3,31) and fechainicio > '01-01-2026';");   
+        $salida=$query->result();
+        foreach ($query->result() as $row)
+        {
+                $salida=$row->enviados;
+        }        
+        return $salida;
+    }
+    public function count_recibidos($id)
+    {
+        if (empty($salida)) { $salida=0; } 
+        $query = $this->db->query("select count(id) as recibidos from sys_poe.dosimetropersona where idestablecimiento=$id and estatus in (3,14) and fechainicio > '01-01-2026';");   
+        $salida=$query->result();
+        foreach ($query->result() as $row)
+        {
+                $salida=$row->recibidos;
+        }        
+        return $salida;  
+    }
 }

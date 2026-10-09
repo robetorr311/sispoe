@@ -268,5 +268,25 @@ class Generar_model extends CI_Model {
         $salida=$query->result();
         return $salida;         
     }    
-             
+    public function get_password($passwd){
+        if (empty($salida)) { $salida=""; }     
+        $query = $this->db->query("select * from comun.configuraciones where key='pwd_anular';");   
+        foreach ($query->result() as $row)
+        {
+            $valor=$row->valor;
+        }
+        if(trim($valor)==trim($passwd)){
+            return $valor;
+        }
+        else{
+            return $valor;
+        }         
+    }
+    public function get_establecimientos_new($estado)
+    {
+        if (empty($salida)) { $salida=""; } 
+         
+        $query = $this->db->query("select * from sys_poe.fgrupo_establecimiento_estado($estado);");   
+        return $query->result();         
+    }
 }

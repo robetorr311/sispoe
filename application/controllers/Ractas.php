@@ -245,8 +245,8 @@ class Ractas extends MY_Controller {
         $old_y=$y;
         $this->pdf->SetY($y);
         $this->pdf->SetX($x);                               
-        $this->pdf->Image('./assets/img/sello.png',$x+140,$y+55,50,50);
-        $this->pdf->Image('./assets/img/firma.png',$x+60,$y+55,80,50);
+        //$this->pdf->Image('./assets/img/sello.png',$x+140,$y+55,50,50);
+        //$this->pdf->Image('./assets/img/firma.png',$x+60,$y+55,80,50);
         }
         else{
             $this->pdf->AddPage();
@@ -274,8 +274,8 @@ class Ractas extends MY_Controller {
         $old_y=$y;
         $this->pdf->SetY($y);
         $this->pdf->SetX($x);                               
-        $this->pdf->Image('./assets/img/sello.png',$x+140,$y+55,50,50);
-        $this->pdf->Image('./assets/img/firma.png',$x+60,$y+55,80,50);
+        //$this->pdf->Image('./assets/img/sello.png',$x+140,$y+55,50,50);
+        //$this->pdf->Image('./assets/img/firma.png',$x+60,$y+55,80,50);
         }
 
         $this->pdf->Output();       

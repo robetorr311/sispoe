@@ -415,4 +415,9 @@ class Personal_model extends CI_Model {
         $this->db->where('idpersonal', $id);
         $this->db->delete('sys_poe.personalservicios');
     }
+    public function exportar(){
+        $query = $this->db->query("select * from sys_poe.vexportar_personal where estatus='ACTIVO' order by estado_establecimiento,codigoestablecimiento,codigoservicio,poe,nombre");
+        $salida=$query->result();
+        return $salida; 
+    }
 }
